@@ -1,0 +1,483 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Detection Details | InnoCLave AgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================================= -->
+<!-- DETECTION DETAIL HERO -->
+<!-- ========================================================= -->
+
+<section class="page-banner py-5">
+
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <span class="badge bg-primary px-3 py-2 mb-3">
+                    AI DETECTION RESULT
+                </span>
+
+                <h1 class="display-6 fw-bold text-white mb-2">
+                    Detection Details
+                </h1>
+
+                <p class="text-light opacity-75 mb-0">
+                    Detailed information about your AI detection result.
+                </p>
+
+            </div>
+
+            <div>
+
+                <a
+                    href="{% url 'detection:detection_history' %}"
+                    class="btn btn-outline-light"
+                >
+                    <i class="fa-solid fa-arrow-left me-2"></i>
+                    Back to History
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- DETECTION DETAILS -->
+<!-- ========================================================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- ================================================= -->
+            <!-- DETECTION IMAGE -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div
+                    class="card bg-dark border-0
+                           shadow-lg rounded-4 h-100"
+                >
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <h4 class="text-white fw-bold mb-0">
+                                <i class="fa-solid fa-image text-primary me-2"></i>
+                                Detected Image
+                            </h4>
+
+                            <span class="badge bg-info text-dark">
+                                ID #{{ detection.pk }}
+                            </span>
+
+                        </div>
+
+
+                        {% if detection.image %}
+
+                        <div class="text-center">
+
+                            <img
+                                src="{{ detection.image.url }}"
+                                class="img-fluid rounded-4 shadow"
+                                style="
+                                    max-height: 500px;
+                                    width: 100%;
+                                    object-fit: contain;
+                                    background: #111;
+                                "
+                                alt="{{ detection.predicted_class }}"
+                            >
+
+                        </div>
+
+                        {% else %}
+
+                        <div
+                            class="d-flex align-items-center
+                                   justify-content-center
+                                   bg-secondary rounded-4"
+                            style="height: 400px;"
+                        >
+
+                            <div class="text-center">
+
+                                <i
+                                    class="fa-solid fa-image
+                                           fa-4x text-light mb-3"
+                                ></i>
+
+                                <h5 class="text-white">
+                                    No Image Available
+                                </h5>
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- RESULT INFORMATION -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div
+                    class="card bg-dark border-0
+                           shadow-lg rounded-4 h-100"
+                >
+
+                    <div class="card-body p-4">
+
+                        <h4 class="text-white fw-bold mb-4">
+
+                            <i
+                                class="fa-solid fa-chart-simple
+                                       text-primary me-2"
+                            ></i>
+
+                            Detection Information
+
+                        </h4>
+
+
+                        <!-- ===================================== -->
+                        <!-- PREDICTED CLASS -->
+                        <!-- ===================================== -->
+
+                        <div
+                            class="p-3 mb-3 rounded-3"
+                            style="background: rgba(255,255,255,0.05);"
+                        >
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="text-light opacity-75">
+                                    <i class="fa-solid fa-bullseye me-2"></i>
+                                    Detected Object
+                                </span>
+
+                                <strong class="text-white">
+                                    {{ detection.predicted_class }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- CONFIDENCE -->
+                        <!-- ===================================== -->
+
+                        <div
+                            class="p-3 mb-3 rounded-3"
+                            style="background: rgba(255,255,255,0.05);"
+                        >
+
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                <span class="text-light opacity-75">
+                                    <i class="fa-solid fa-gauge-high me-2"></i>
+                                    Confidence
+                                </span>
+
+
+                                {% if detection.confidence >= 80 %}
+
+                                <span class="badge bg-success">
+                                    {{ detection.confidence|floatformat:2 }}%
+                                </span>
+
+                                {% elif detection.confidence >= 50 %}
+
+                                <span class="badge bg-warning text-dark">
+                                    {{ detection.confidence|floatformat:2 }}%
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-danger">
+                                    {{ detection.confidence|floatformat:2 }}%
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="progress" style="height: 10px;">
+
+                                <div
+                                    class="progress-bar
+                                    {% if detection.confidence >= 80 %}
+                                        bg-success
+                                    {% elif detection.confidence >= 50 %}
+                                        bg-warning
+                                    {% else %}
+                                        bg-danger
+                                    {% endif %}"
+                                    role="progressbar"
+                                    style="width: {{ detection.confidence }}%;"
+                                    aria-valuenow="{{ detection.confidence }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- STATUS -->
+                        <!-- ===================================== -->
+
+                        <div
+                            class="p-3 mb-3 rounded-3"
+                            style="background: rgba(255,255,255,0.05);"
+                        >
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="text-light opacity-75">
+                                    <i class="fa-solid fa-circle-check me-2"></i>
+                                    Status
+                                </span>
+
+
+                                {% if detection.predicted_class == "Processing..." %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Processing
+                                </span>
+
+                                {% elif detection.confidence >= 80 %}
+
+                                <span class="badge bg-success">
+                                    High Confidence
+                                </span>
+
+                                {% elif detection.confidence >= 50 %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Medium Confidence
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-danger">
+                                    Low Confidence
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- MODEL -->
+                        <!-- ===================================== -->
+
+                        <div
+                            class="p-3 mb-3 rounded-3"
+                            style="background: rgba(255,255,255,0.05);"
+                        >
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="text-light opacity-75">
+                                    <i class="fa-solid fa-brain me-2"></i>
+                                    AI Model
+                                </span>
+
+                                <span class="badge bg-info text-dark">
+                                    {{ detection.model_name }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- DATE -->
+                        <!-- ===================================== -->
+
+                        <div
+                            class="p-3 mb-3 rounded-3"
+                            style="background: rgba(255,255,255,0.05);"
+                        >
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="text-light opacity-75">
+                                    <i class="fa-solid fa-calendar me-2"></i>
+                                    Detection Date
+                                </span>
+
+                                <span class="text-white">
+
+                                    {{ detection.created_at|date:"d M Y" }}
+
+                                    <br>
+
+                                    <small class="text-secondary">
+
+                                        {{ detection.created_at|date:"h:i A" }}
+
+                                    </small>
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- USER -->
+                        <!-- ===================================== -->
+
+                        <div
+                            class="p-3 mb-4 rounded-3"
+                            style="background: rgba(255,255,255,0.05);"
+                        >
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="text-light opacity-75">
+                                    <i class="fa-solid fa-user me-2"></i>
+                                    Detected By
+                                </span>
+
+                                <span class="text-white">
+                                    {{ detection.user.username }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- ACTION BUTTONS -->
+                        <!-- ===================================== -->
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <a
+                                href="{% url 'detection:detection_history' %}"
+                                class="btn btn-outline-light"
+                            >
+
+                                <i
+                                    class="fa-solid fa-clock-rotate-left me-2"
+                                ></i>
+
+                                History
+
+                            </a>
+
+
+                            <a
+                                href="{% url 'detection:delete_detection' detection.pk %}"
+                                class="btn btn-danger"
+                            >
+
+                                <i
+                                    class="fa-solid fa-trash me-2"
+                                ></i>
+
+                                Delete
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- AI NOTICE -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="alert alert-warning
+                   border-0 shadow-sm rounded-4 p-4"
+        >
+
+            <div class="d-flex align-items-start">
+
+                <i
+                    class="fa-solid
+                           fa-triangle-exclamation
+                           fa-2x me-3 mt-1"
+                ></i>
+
+                <div>
+
+                    <h5 class="fw-bold">
+                        Important AI Prediction Notice
+                    </h5>
+
+                    <p class="mb-0">
+
+                        AI predictions are intended to assist
+                        with preliminary agricultural assessment.
+                        A low-confidence prediction should not be
+                        treated as a confirmed diagnosis.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

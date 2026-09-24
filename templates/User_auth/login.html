@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Login | InnoCLave AgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ================================= -->
+<!-- Login Banner -->
+<!-- ================================= -->
+
+<section class="page-banner py-5 bg-light">
+
+    <div class="container text-center">
+
+        <span class="badge bg-success px-3 py-2 mb-3">
+
+            WELCOME BACK
+
+        </span>
+
+        <h1 class="display-5 fw-bold">
+
+            Sign In To Your Account
+
+        </h1>
+
+        <p class="lead text-secondary mx-auto" style="max-width:700px;">
+
+            Access AI-powered crop disease detection, real-time monitoring,
+            reports, detection history, and your personalized dashboard.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Login Section -->
+<!-- ================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center align-items-center g-5">
+
+            <!-- ================================= -->
+            <!-- Left Side -->
+            <!-- ================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                    <img src="{% static 'images/login-banner.png' %}"
+                         class="img-fluid"
+                         alt="AI Agriculture Login">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-success mb-3">
+
+                            SMART AGRICULTURE
+
+                        </span>
+
+                        <h2 class="fw-bold">
+
+                            AI Powered Plant Disease Detection
+
+                        </h2>
+
+                        <p class="text-secondary mt-3">
+
+                            Login to access AI-powered crop disease detection,
+                            image analysis, live monitoring, reports,
+                            and your complete farming dashboard.
+
+                        </p>
+
+                        <div class="row text-center mt-4">
+
+                            <div class="col-4">
+
+                                <h3 class="fw-bold text-success">
+
+                                    99%
+
+                                </h3>
+
+                                <small class="text-secondary">
+
+                                    Accuracy
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <h3 class="fw-bold text-primary">
+
+                                    24/7
+
+                                </h3>
+
+                                <small class="text-secondary">
+
+                                    Monitoring
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <h3 class="fw-bold text-danger">
+
+                                    AI
+
+                                </h3>
+
+                                <small class="text-secondary">
+
+                                    Powered
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================================= -->
+            <!-- Login Form -->
+            <!-- ================================= -->
+
+            <div class="col-lg-5">
+
+                <div class="card border-0 shadow-lg rounded-4">
+
+                    <div class="card-body p-5">
+
+                        <div class="text-center mb-4">
+
+                            <div class="mb-3">
+
+                                <i class="fa-solid fa-user-shield fa-3x text-success"></i>
+
+                            </div>
+
+                            <h2 class="fw-bold">
+
+                                Login
+
+                            </h2>
+
+                            <p class="text-secondary">
+
+                                Sign in to continue
+
+                            </p>
+
+                        </div>
+
+                        <form method="POST">
+
+                            {% csrf_token %}
+
+                            <!-- Username -->
+
+                            <div class="mb-4">
+
+                                <label class="form-label fw-semibold">
+
+                                    Username
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i class="fa-solid fa-user text-success"></i>
+
+                                    </span>
+
+                                    <input type="text"
+                                           name="username"
+                                           class="form-control"
+                                           placeholder="Enter Username"
+                                           required>
+
+                                </div>
+
+                            </div>
+
+                                                        <!-- Password -->
+
+                            <div class="mb-4">
+
+                                <label class="form-label fw-semibold">
+
+                                    Password
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i class="fa-solid fa-lock text-success"></i>
+
+                                    </span>
+
+                                    <input type="password"
+                                           id="password"
+                                           name="password"
+                                           class="form-control"
+                                           placeholder="Enter Password"
+                                           required>
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="togglePassword()">
+
+                                        <i class="fa-solid fa-eye"
+                                           id="toggleIcon"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Remember Me & Forgot Password -->
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="rememberMe"
+                                           name="remember">
+
+                                    <label class="form-check-label"
+                                           for="rememberMe">
+
+                                        Remember Me
+
+                                    </label>
+
+                                </div>
+
+                                <a href="#"
+                                   class="text-success text-decoration-none fw-semibold">
+
+                                    Forgot Password?
+
+                                </a>
+
+                            </div>
+
+                            <!-- Login Button -->
+
+                            <div class="d-grid">
+
+                                <button type="submit"
+                                        class="btn btn-success btn-lg">
+
+                                    <i class="fa-solid fa-right-to-bracket me-2"></i>
+
+                                    Login
+
+                                </button>
+
+                            </div>
+
+                            <!-- Divider -->
+
+                            <div class="text-center position-relative my-4">
+
+                                <hr>
+
+                                <span class="bg-white px-3 text-secondary position-absolute top-50 start-50 translate-middle">
+
+                                    OR
+
+                                </span>
+
+                            </div>
+                                                        <!-- ================================= -->
+                            <!-- Google Login -->
+                            <!-- ================================= -->
+
+                            <div class="d-grid mb-4">
+
+                                <a href="#"
+                                   class="btn btn-outline-dark btn-lg">
+
+                                    <i class="fa-brands fa-google text-danger me-2"></i>
+
+                                    Continue with Google
+
+                                </a>
+
+                            </div>
+
+                            <!-- ================================= -->
+                            <!-- Register Link -->
+                            <!-- ================================= -->
+
+                            <div class="text-center">
+
+                                <p class="mb-0 text-secondary">
+
+                                    Don't have an account?
+
+                                    <a href="{% url 'register' %}"
+                                       class="fw-bold text-success text-decoration-none">
+
+                                        Create Account
+
+                                    </a>
+
+                                </p>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ================================= -->
+<!-- JavaScript -->
+<!-- ================================= -->
+
+<script>
+
+    // ==============================
+    // Show / Hide Password
+    // ==============================
+
+    function togglePassword() {
+
+        const password = document.getElementById("password");
+
+        const icon = document.getElementById("toggleIcon");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            icon.classList.remove("fa-eye");
+
+            icon.classList.add("fa-eye-slash");
+
+        }
+
+        else {
+
+            password.type = "password";
+
+            icon.classList.remove("fa-eye-slash");
+
+            icon.classList.add("fa-eye");
+
+        }
+
+    }
+
+    // ==============================
+    // Bootstrap Validation
+    // ==============================
+
+    (() => {
+
+        'use strict';
+
+        const forms = document.querySelectorAll('form');
+
+        Array.from(forms).forEach(form => {
+
+            form.addEventListener('submit', event => {
+
+                if (!form.checkValidity()) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                }
+
+                form.classList.add('was-validated');
+
+            }, false);
+
+        });
+
+    })();
+
+</script>
+
+{% endblock %}

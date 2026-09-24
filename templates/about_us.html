@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+About Us | SmartAgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ================================= -->
+<!-- Page Banner -->
+<!-- ================================= -->
+
+<section class="page-banner py-5 text-center">
+
+    <div class="container">
+
+        <h1 class="display-4 fw-bold">
+
+            About Us
+
+        </h1>
+
+        <p class="lead">
+
+            Artificial Intelligence Powered Flower, Fruit & Vegetable Detection System
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- About Section -->
+<!-- ================================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center gy-5">
+
+            <!-- Image -->
+
+            <div class="col-lg-6">
+
+                <img src="{% static 'images/about/about.png' %}"
+                     class="img-fluid rounded-4 shadow-lg"
+                     alt="About SmartAgriVision">
+
+            </div>
+
+            <!-- Content -->
+
+            <div class="col-lg-6">
+
+                <span class="badge bg-primary mb-3 px-3 py-2">
+
+                    ABOUT SMARTAGRIVISION
+
+                </span>
+
+                <h2 class="fw-bold mb-4">
+
+                    Why Choose SmartAgriVision?
+
+                </h2>
+
+                <p class="mb-3">
+
+                    SmartAgriVision is an AI-powered web application designed
+                    to identify flowers, fruits and vegetables using advanced
+                    Deep Learning and Computer Vision technology.
+
+                </p>
+
+                <p class="mb-4">
+
+                    Built with Django, YOLOv8 and OpenCV, our system provides
+                    image detection, video detection and real-time camera
+                    detection with a modern user interface and high accuracy.
+
+                </p>
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+
+                        High Accuracy Detection
+
+                    </li>
+
+                    <li class="list-group-item">
+
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+
+                        Real-Time Camera Support
+
+                    </li>
+
+                    <li class="list-group-item">
+
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+
+                        YOLOv8 AI Deep Learning Model
+
+                    </li>
+
+                    <li class="list-group-item">
+
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+
+                        Secure Django Framework
+
+                    </li>
+
+                    <li class="list-group-item">
+
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+
+                        Responsive Web Application
+
+                    </li>
+
+                    <li class="list-group-item">
+
+                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+
+                        User Friendly Dashboard
+
+                    </li>
+
+                </ul>
+
+                <div class="mt-4">
+
+                    <a href="{% url 'home' %}"
+                       class="btn btn-register">
+
+                        Back To Home
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- Statistics -->
+<!-- ================================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row text-center g-4">
+
+            <div class="col-md-3">
+
+                <div class="card h-100">
+
+                    <div class="card-body">
+
+                        <h2 class="fw-bold">
+
+                            98%
+
+                        </h2>
+
+                        <p>
+
+                            Detection Accuracy
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card h-100">
+
+                    <div class="card-body">
+
+                        <h2 class="fw-bold">
+
+                            120+
+
+                        </h2>
+
+                        <p>
+
+                            AI Classes
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card h-100">
+
+                    <div class="card-body">
+
+                        <h2 class="fw-bold">
+
+                            24/7
+
+                        </h2>
+
+                        <p>
+
+                            System Availability
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card h-100">
+
+                    <div class="card-body">
+
+                        <h2 class="fw-bold">
+
+                            AI
+
+                        </h2>
+
+                        <p>
+
+                            Powered Detection
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

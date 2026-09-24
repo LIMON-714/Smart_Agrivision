@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <!-- Header -->
+
+                <div class="bg-success text-white p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <i class="fa-solid fa-user-pen fa-2x me-3"></i>
+
+                        <div>
+
+                            <h2 class="mb-1 fw-bold">
+                                Edit Profile
+                            </h2>
+
+                            <p class="mb-0">
+                                Update your personal information and account details.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body p-5">
+
+                    <form method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <!-- ========================== -->
+                        <!-- Profile Image -->
+                        <!-- ========================== -->
+
+                        <div class="text-center mb-5">
+
+                            <div class="position-relative d-inline-block">
+
+                                {% if request.user.profile.profile_image %}
+
+                                    <img src="{{ request.user.profile.profile_image.url }}"
+                                         id="previewImage"
+                                         class="rounded-circle border border-5 border-white shadow"
+                                         width="180"
+                                         height="180"
+                                         style="object-fit:cover;"
+                                         alt="Profile Image">
+
+                                {% else %}
+
+                                    <img src="{% static 'images/default-user.png' %}"
+                                         id="previewImage"
+                                         class="rounded-circle border border-5 border-white shadow"
+                                         width="180"
+                                         height="180"
+                                         style="object-fit:cover;"
+                                         alt="Profile Image">
+
+                                {% endif %}
+
+                                <label for="id_profile_image"
+                                       class="btn btn-success rounded-circle position-absolute bottom-0 end-0">
+
+                                    <i class="fa-solid fa-camera"></i>
+
+                                </label>
+
+                                {{ profile_form.profile_image }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- First Name -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    First Name
+                                </label>
+
+                                {{ user_form.first_name }}
+
+                            </div>
+
+                            <!-- Last Name -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Last Name
+                                </label>
+
+                                {{ user_form.last_name }}
+
+                            </div>
+
+                            <!-- Username -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Username
+                                </label>
+
+                                {{ user_form.username }}
+
+                            </div>
+
+                            <!-- Email -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Email Address
+                                </label>
+
+                                {{ user_form.email }}
+
+                            </div>
+
+                            <!-- Phone -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Phone Number
+                                </label>
+
+                                {{ profile_form.phone }}
+
+                            </div>
+
+                            <!-- Date of Birth -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Date of Birth
+                                </label>
+
+                                {{ profile_form.date_of_birth }}
+
+                            </div>
+
+                            <!-- Gender -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Gender
+                                </label>
+
+                                {{ profile_form.gender }}
+
+                            </div>
+
+                            <!-- Profession -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Profession
+                                </label>
+
+                                {{ profile_form.profession }}
+
+                            </div>
+
+                            <!-- Organization -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Organization
+                                </label>
+
+                                {{ profile_form.organization }}
+
+                            </div>
+
+                            <!-- Country -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Country
+                                </label>
+
+                                {{ profile_form.country }}
+
+                            </div>
+                                                        <!-- Division -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Division
+                                </label>
+
+                                {{ profile_form.division }}
+
+                            </div>
+
+                            <!-- District -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    District
+                                </label>
+
+                                {{ profile_form.district }}
+
+                            </div>
+
+                            <!-- Postal Code -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Postal Code
+                                </label>
+
+                                {{ profile_form.postal_code }}
+
+                            </div>
+
+                            <!-- Website -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Website
+                                </label>
+
+                                {{ profile_form.website }}
+
+                            </div>
+
+                            <!-- Address -->
+
+                            <div class="col-12 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Address
+                                </label>
+
+                                {{ profile_form.address }}
+
+                            </div>
+
+                            <!-- About Me -->
+
+                            <div class="col-12 mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    About Me
+                                </label>
+
+                                {{ profile_form.bio }}
+
+                            </div>
+
+                            <hr class="my-5">
+
+                            <!-- Save Button -->
+
+                            <div class="text-center mt-5 mb-5">
+
+                                <button type="submit"
+                                        class="btn btn-success btn-lg px-5 rounded-pill">
+
+                                    <i class="fa-solid fa-floppy-disk me-2"></i>
+
+                                    Save Changes
+
+                                </button>
+
+                                <a href="{% url 'profile' %}"
+                                   class="btn btn-outline-secondary btn-lg px-5 rounded-pill ms-2">
+
+                                    Cancel
+
+                                </a>
+
+                            </div>
+
+                        </div> 
+
+                            </form>
+
+</div> <!-- card-body -->
+
+</div> <!-- card -->
+
+</div> <!-- col-xl-10 -->
+
+</div> <!-- row -->
+
+</div> <!-- container -->
+
+<script>
+
+const profileInput = document.getElementById("id_profile_image");
+const previewImage = document.getElementById("previewImage");
+
+if (profileInput) {
+
+    profileInput.addEventListener("change", function(e) {
+
+        const file = e.target.files[0];
+
+        if (file) {
+
+            previewImage.src = URL.createObjectURL(file);
+
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

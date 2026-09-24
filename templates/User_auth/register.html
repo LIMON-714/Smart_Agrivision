@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Register | InnoCLave AgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ================================= -->
+<!-- Register Section -->
+<!-- ================================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="row justify-content-center align-items-center g-5">
+
+            <!-- ================================= -->
+            <!-- Left Side -->
+            <!-- ================================= -->
+
+            <div class="col-lg-5">
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                    <img src="{% static 'images/register-banner.png' %}"
+                         class="img-fluid"
+                         alt="Register">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-success mb-3">
+
+                            JOIN SMART FARMING
+
+                        </span>
+
+                        <h2 class="fw-bold">
+
+                            Create Your AI Agriculture Account
+
+                        </h2>
+
+                        <p class="text-secondary mt-3">
+
+                            Join InnoCLave AgriVision and unlock AI-powered crop
+                            disease detection, image analysis, live monitoring,
+                            smart reports, and your personalized agriculture dashboard.
+
+                        </p>
+
+                        <div class="row text-center mt-4">
+
+                            <div class="col-4">
+
+                                <h3 class="fw-bold text-success">
+
+                                    AI
+
+                                </h3>
+
+                                <small class="text-secondary">
+
+                                    Detection
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <h3 class="fw-bold text-primary">
+
+                                    24/7
+
+                                </h3>
+
+                                <small class="text-secondary">
+
+                                    Monitoring
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <h3 class="fw-bold text-danger">
+
+                                    Cloud
+
+                                </h3>
+
+                                <small class="text-secondary">
+
+                                    Storage
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================================= -->
+            <!-- Register Form -->
+            <!-- ================================= -->
+
+            <div class="col-lg-7">
+
+                <div class="card border-0 shadow-lg rounded-4">
+
+                    <div class="card-body p-5">
+
+                        <div class="text-center mb-4">
+
+                            <div class="mb-3">
+
+                                <i class="fa-solid fa-user-plus fa-3x text-success"></i>
+
+                            </div>
+
+                            <h2 class="fw-bold">
+
+                                Create Account
+
+                            </h2>
+
+                            <p class="text-secondary">
+
+                                Register to continue
+
+                            </p>
+
+                        </div>
+
+                        <form method="POST">
+
+                            {% csrf_token %}
+
+                            <div class="row">
+
+                                <!-- First Name -->
+
+                                <div class="col-md-6 mb-4">
+
+                                    <label class="form-label fw-semibold">
+
+                                        First Name
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+
+                                            <i class="fa-solid fa-user text-success"></i>
+
+                                        </span>
+
+                                        <input type="text"
+                                               name="first_name"
+                                               class="form-control"
+                                               placeholder="First Name"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Last Name -->
+
+                                <div class="col-md-6 mb-4">
+
+                                    <label class="form-label fw-semibold">
+
+                                        Last Name
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+
+                                            <i class="fa-solid fa-user text-success"></i>
+
+                                        </span>
+
+                                        <input type="text"
+                                               name="last_name"
+                                               class="form-control"
+                                               placeholder="Last Name"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Username -->
+
+                                <div class="col-md-6 mb-4">
+
+                                    <label class="form-label fw-semibold">
+
+                                        Username
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+
+                                            <i class="fa-solid fa-at text-success"></i>
+
+                                        </span>
+
+                                        <input type="text"
+                                               name="username"
+                                               class="form-control"
+                                               placeholder="Choose Username"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Email -->
+
+                                <div class="col-md-6 mb-4">
+
+                                    <label class="form-label fw-semibold">
+
+                                        Email Address
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+
+                                            <i class="fa-solid fa-envelope text-success"></i>
+
+                                        </span>
+
+                                        <input type="email"
+                                               name="email"
+                                               class="form-control"
+                                               placeholder="Email Address"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Password Row -->
+
+                                    <div class="row">
+
+                                        <!-- Password -->
+                                        <div class="col-md-6 mb-4">
+
+                                            <label class="form-label fw-semibold">
+                                                Password
+                                            </label>
+
+                                            <div class="input-group">
+
+                                                <span class="input-group-text">
+                                                    <i class="fa-solid fa-lock text-success"></i>
+                                                </span>
+
+                                                <input
+                                                    type="password"
+                                                    id="password"
+                                                    name="password1"
+                                                    class="form-control"
+                                                    placeholder="Create Password"
+                                                    minlength="8"
+                                                    required>
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-secondary"
+                                                    onclick="togglePassword('password','icon1')">
+
+                                                    <i class="fa-solid fa-eye" id="icon1"></i>
+
+                                                </button>
+
+                                            </div>
+
+                                            <!-- Password Warning -->
+                                            <div
+                                                id="password-warning"
+                                                class="small mt-2"
+                                                style="display:none;">
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Confirm Password -->
+                                        <div class="col-md-6 mb-4">
+
+                                            <label class="form-label fw-semibold">
+                                                Confirm Password
+                                            </label>
+
+                                            <div class="input-group">
+
+                                                <span class="input-group-text">
+                                                    <i class="fa-solid fa-lock text-success"></i>
+                                                </span>
+
+                                                <input
+                                                    type="password"
+                                                    id="confirm_password"
+                                                    name="password2"
+                                                    class="form-control"
+                                                    placeholder="Confirm Password"
+                                                    required>
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-secondary"
+                                                    onclick="togglePassword('confirm_password','icon2')">
+
+                                                    <i class="fa-solid fa-eye" id="icon2"></i>
+
+                                                </button>
+
+                                            </div>
+
+                                            <!-- Confirm Password Warning -->
+                                            <div
+                                                id="confirm-warning"
+                                                class="small mt-2"
+                                                style="display:none;">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                            <!-- Terms -->
+
+                            <div class="form-check mb-4">
+
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="terms"
+                                       required>
+
+                                <label class="form-check-label"
+                                       for="terms">
+
+                                    I agree to the
+
+                                    <a href="#"
+                                       class="text-success fw-semibold text-decoration-none">
+
+                                        Terms & Conditions
+
+                                    </a>
+
+                                    and
+
+                                    <a href="#"
+                                       class="text-success fw-semibold text-decoration-none">
+
+                                        Privacy Policy
+
+                                    </a>
+
+                                </label>
+
+                            </div>
+
+                                                        <!-- ================================= -->
+                            <!-- Register Button -->
+                            <!-- ================================= -->
+
+                            <div class="d-grid mb-4">
+
+                                <button type="submit"
+                                        class="btn btn-success btn-lg rounded-3">
+
+                                    <i class="fa-solid fa-user-plus me-2"></i>
+
+                                    Create Account
+
+                                </button>
+
+                            </div>
+
+                            <!-- ================================= -->
+                            <!-- Divider -->
+                            <!-- ================================= -->
+
+                            <div class="text-center position-relative my-4">
+
+                                <hr>
+
+                                <span class="bg-white px-3 text-secondary position-absolute top-50 start-50 translate-middle">
+
+                                    OR
+
+                                </span>
+
+                            </div>
+
+                            <!-- ================================= -->
+                            <!-- Google Register -->
+                            <!-- ================================= -->
+
+                            <div class="d-grid mb-4">
+
+                                <a href="#"
+                                   class="btn btn-outline-dark btn-lg rounded-3">
+
+                                    <i class="fa-brands fa-google text-danger me-2"></i>
+
+                                    Continue with Google
+
+                                </a>
+
+                            </div>
+
+                            <!-- ================================= -->
+                            <!-- Login Link -->
+                            <!-- ================================= -->
+
+                            <div class="text-center">
+
+                                <p class="mb-0 text-secondary">
+
+                                    Already have an account?
+
+                                    <a href="{% url 'login' %}"
+                                       class="fw-bold text-success text-decoration-none">
+
+                                        Login Here
+
+                                    </a>
+
+                                </p>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= -->
+<!-- JavaScript -->
+<!-- ================================= -->
+
+<script>
+
+    {% block extra_js %}
+        <script src="{% static 'js/register.js' %}"></script>
+    {% endblock %}
+
+</script>
+
+{% endblock %}

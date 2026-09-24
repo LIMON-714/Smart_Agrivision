@@ -1,0 +1,323 @@
+{% load static %}
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="row gy-4">
+
+            <!-- ========================= -->
+            <!-- ABOUT -->
+            <!-- ========================= -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <h4 class="mb-3 d-flex align-items-center">
+
+                    <img
+                        src="{% static 'images/logo/logo.png' %}"
+                        alt="InnoCLave AgriVision Logo"
+                        style="
+                            width:45px;
+                            height:45px;
+                            object-fit:contain;
+                            margin-right:10px;
+                        "
+                    >
+
+                    <span>
+                        InnoCLave
+                    </span>
+
+                </h4>
+
+                <p>
+                    InnoCLave's AgriVision is an AI-powered Flower,
+                    Fruit and Vegetable Detection System developed
+                    using Django, YOLOv8 and OpenCV. It helps users
+                    identify agricultural products quickly and
+                    accurately.
+                </p>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- QUICK LINKS -->
+            <!-- ========================= -->
+
+            <div class="col-lg-2 col-md-6">
+
+                <h5 class="mb-3">
+                    Quick Links
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <!-- Home -->
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+
+                    <!-- Detection -->
+
+                    <li>
+
+                        {% if user.is_authenticated %}
+
+                            <a href="{% url 'detection:detection' %}">
+                                Detection
+                            </a>
+
+                        {% else %}
+
+                            <a href="{% url 'login' %}">
+                                Detection
+                            </a>
+
+                        {% endif %}
+
+                    </li>
+
+
+                    <!-- About -->
+
+                    <li>
+                        <a href="{% url 'about' %}">
+                            About
+                        </a>
+                    </li>
+
+
+                    <!-- Contact -->
+
+                    <li>
+                        <a href="{% url 'contact' %}">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- AI DETECTION -->
+            <!-- ========================= -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <h5 class="mb-3">
+                    AI Detection
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    {% if user.is_authenticated %}
+
+                        <!-- Image Detection -->
+
+                        <li>
+
+                            <a href="{% url 'detection:image_detection' %}">
+                                Image Detection
+                            </a>
+
+                        </li>
+
+
+                        <!-- Video Detection -->
+
+                        <li>
+
+                            <a href="{% url 'detection:video_detection' %}">
+                                Video Detection
+                            </a>
+
+                        </li>
+
+
+                        <!-- Camera Detection -->
+
+                        <li>
+
+                            <a href="{% url 'detection:camera_detection' %}">
+                                Live Camera
+                            </a>
+
+                        </li>
+
+
+                        <!-- Detection History -->
+
+                        <li>
+
+                            <a href="{% url 'detection:detection_history' %}">
+                                Detection History
+                            </a>
+
+                        </li>
+
+                    {% else %}
+
+                        <!-- Login required -->
+
+                        <li>
+
+                            <a href="{% url 'login' %}">
+                                Image Detection
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="{% url 'login' %}">
+                                Video Detection
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="{% url 'login' %}">
+                                Live Camera
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="{% url 'login' %}">
+                                Detection History
+                            </a>
+
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- CONTACT -->
+            <!-- ========================= -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <h5 class="mb-3">
+                    Contact
+                </h5>
+
+
+                <!-- Email -->
+
+                <p>
+
+                    <i class="fa-solid fa-envelope me-2"></i>
+
+                    support@smartagrivision.com
+
+                </p>
+
+
+                <!-- Phone -->
+
+                <p>
+
+                    <i class="fa-solid fa-phone me-2"></i>
+
+                    +880 1700-000000
+
+                </p>
+
+
+                <!-- Location -->
+
+                <p>
+
+                    <i class="fa-solid fa-location-dot me-2"></i>
+
+                    Dhaka, Bangladesh
+
+                </p>
+
+
+                <!-- Social Links -->
+
+                <div class="d-flex gap-3 mt-3">
+
+                    <a href="#" aria-label="Facebook">
+
+                        <i class="fab fa-facebook-f"></i>
+
+                    </a>
+
+
+                    <a href="#" aria-label="LinkedIn">
+
+                        <i class="fab fa-linkedin-in"></i>
+
+                    </a>
+
+
+                    <a href="#" aria-label="GitHub">
+
+                        <i class="fab fa-github"></i>
+
+                    </a>
+
+
+                    <a href="#" aria-label="YouTube">
+
+                        <i class="fab fa-youtube"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- DIVIDER -->
+        <!-- ========================= -->
+
+        <hr>
+
+
+        <!-- ========================= -->
+        <!-- COPYRIGHT -->
+        <!-- ========================= -->
+
+        <div class="row align-items-center justify-content-center">
+
+            <div class="col-md-6 text-center">
+
+                <p class="mb-0">
+
+                    © {% now "Y" %}
+                    InnoCLave It Solution.
+                    All Rights Reserved.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>

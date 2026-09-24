@@ -1,0 +1,4 @@
+Fruits-360/
+New_Plant_Diseases/
+PlantDoc/
+Vegetable_Dataset/

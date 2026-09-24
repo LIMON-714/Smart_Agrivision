@@ -1,0 +1,181 @@
+<div id="sidebar" class="sidebar">
+
+    <div class="sidebar-header">
+
+        <h5>
+
+            <i class="fa-solid fa-leaf me-2"></i>
+
+            SmartAgriVision
+
+        </h5>
+
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+
+            <a href="{% url 'home' %}">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Home</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'detection' %}">
+
+                <i class="fa-solid fa-microchip"></i>
+
+                <span>AI Detection</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'image_detection' %}">
+
+                <i class="fa-solid fa-image"></i>
+
+                <span>Image Detection</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'video_detection' %}">
+
+                <i class="fa-solid fa-video"></i>
+
+                <span>Video Detection</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'camera_detection' %}">
+
+                <i class="fa-solid fa-camera"></i>
+
+                <span>Live Camera</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'history' %}">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                <span>Detection History</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>About</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <span>Contact</span>
+
+            </a>
+
+        </li>
+
+        {% if user.is_authenticated %}
+
+        <li>
+
+            <a href="{% url 'profile' %}">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>Profile</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'logout' %}">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
+        </li>
+
+        {% else %}
+
+        <li>
+
+            <a href="{% url 'login' %}">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                <span>Login</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'register' %}">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                <span>Register</span>
+
+            </a>
+
+        </li>
+
+        {% endif %}
+
+    </ul>
+
+</div>

@@ -1,0 +1,526 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================= -->
+<!-- HERO SECTION -->
+<!-- ========================= -->
+
+<section class="hero-section py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <span class="badge bg-success mb-3">
+                    AI Powered Agriculture
+                </span>
+
+                <h1 class="display-4 fw-bold mb-4">
+                    Smart Vegetable,
+                    & Plant Leaf
+                    Detection System
+                </h1>
+
+                <p class="lead text-muted">
+                    Upload an image, video or use your live camera to
+                    detect vegetables and identify plant leaf diseases with
+                    Artificial Intelligence powered by Django & YOLO.
+                </p>
+
+                <div class="mt-4">
+
+                    {% if user.is_authenticated %}
+
+                        <a href="{% url 'detection:image_detection' %}"
+                           class="btn btn-success btn-lg me-3">
+
+                            <i class="fa-solid fa-image me-2"></i>
+
+                            Image Detection
+
+                        </a>
+
+                        <a href="{% url 'detection:video_detection' %}"
+                           class="btn btn-outline-success btn-lg">
+
+                            <i class="fa-solid fa-video me-2"></i>
+
+                            Video Detection
+
+                        </a>
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}"
+                           class="btn btn-success btn-lg me-3">
+
+                            <i class="fa-solid fa-image me-2"></i>
+
+                            Image Detection
+
+                        </a>
+
+                        <a href="{% url 'login' %}"
+                           class="btn btn-outline-success btn-lg">
+
+                            <i class="fa-solid fa-video me-2"></i>
+
+                            Video Detection
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6 text-center">
+
+                <img src="{% static 'images/webimages/fru.png' %}"
+                     class="img-fluid hero-image"
+                     alt="AI Hero">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- STATISTICS -->
+<!-- ========================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="row text-center">
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-success">
+                    1000+
+                </h2>
+
+                <p>
+                    Images Processed
+                </p>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-success">
+                    98%
+                </h2>
+
+                <p>
+                    Detection Accuracy
+                </p>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-success">
+                    120+
+                </h2>
+
+                <p>
+                    AI Categories
+                </p>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-success">
+                    24/7
+                </h2>
+
+                <p>
+                    System Availability
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- AI SERVICES -->
+<!-- ========================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                AI Detection Services
+            </h2>
+
+            <p class="text-muted">
+                Select your preferred detection method.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- ========================= -->
+            <!-- IMAGE DETECTION -->
+            <!-- ========================= -->
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body text-center">
+
+                        <i class="fa-solid fa-image fa-3x text-success mb-3"></i>
+
+                        <h4>
+                            Image Detection
+                        </h4>
+
+                        <p>
+                        Upload vegetable or leaf images 
+                        for instant AI detection.
+                        </p>
+
+
+                        {% if user.is_authenticated %}
+
+                            <a href="{% url 'detection:image_detection' %}"
+                               class="btn btn-success">
+
+                                Start Detection
+
+                            </a>
+
+                        {% else %}
+
+                            <a href="{% url 'login' %}"
+                               class="btn btn-success">
+
+                                Start Detection
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- VIDEO DETECTION -->
+            <!-- ========================= -->
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body text-center">
+
+                        <i class="fa-solid fa-video fa-3x text-success mb-3"></i>
+
+                        <h4>
+                            Video Detection
+                        </h4>
+
+                        <p>
+                            Upload MP4 videos for frame-by-frame AI analysis.
+                        </p>
+
+
+                        {% if user.is_authenticated %}
+
+                            <a href="{% url 'detection:video_detection' %}"
+                               class="btn btn-success">
+
+                                Detect Video
+
+                            </a>
+
+                        {% else %}
+
+                            <a href="{% url 'login' %}"
+                               class="btn btn-success">
+
+                                Detect Video
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- CAMERA DETECTION -->
+            <!-- ========================= -->
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body text-center">
+
+                        <i class="fa-solid fa-camera fa-3x text-success mb-3"></i>
+
+                        <h4>
+                            Live Camera
+                        </h4>
+
+                        <p>
+                            Use your webcam for real-time AI detection.
+                        </p>
+
+
+                        {% if user.is_authenticated %}
+
+                            <a href="{% url 'detection:camera_detection' %}"
+                               class="btn btn-success">
+
+                                Open Camera
+
+                            </a>
+
+                        {% else %}
+
+                            <a href="{% url 'login' %}"
+                               class="btn btn-success">
+
+                                Open Camera
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- SUPPORTED CATEGORIES -->
+<!-- ========================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Supported Categories
+            </h2>
+
+            <p class="text-muted">
+                Our AI model can identify multiple agricultural objects.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- VEGETABLES -->
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body">
+
+                        <i class="fa-solid fa-carrot fa-3x text-success mb-3"></i>
+
+                        <h4>
+                            Vegetables
+                        </h4>
+
+                        <p>
+                            Detect vegetables in real-time using AI models.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLOWERS -->
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body">
+
+                        <i class="fa-solid fa-seedling fa-3x text-success mb-3"></i>
+
+                        <h4>
+                            Plant Leaves
+                        </h4>
+
+                        <p>
+                            Detect and analyze plant leaves using deep learning.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FRUITS -->
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body">
+
+                        <i class="fa-solid fa-leaf fa-3x text-success mb-3"></i>
+
+                        <h4>
+                            Leaf Diseases
+                        </h4>
+
+                        <p>
+                            Identify plant leaf diseases using AI-powered models. 
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- CALL TO ACTION -->
+<!-- ========================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center">
+
+            <h2 class="fw-bold mb-4">
+                Ready To Experience AI Detection?
+            </h2>
+
+            <p class="lead text-muted mb-4">
+
+                Upload your first image or video and let our AI detect vegetables and identify plant leaf diseases instantly.
+
+
+            </p>
+
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'detection:image_detection' %}"
+                   class="btn btn-success btn-lg me-3">
+
+                    <i class="fa-solid fa-upload me-2"></i>
+
+                    Upload Image
+
+                </a>
+
+
+                <a href="{% url 'detection:camera_detection' %}"
+                   class="btn btn-outline-success btn-lg">
+
+                    <i class="fa-solid fa-camera me-2"></i>
+
+                    Live Camera
+
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-success btn-lg me-3">
+
+                    <i class="fa-solid fa-upload me-2"></i>
+
+                    Upload Image
+
+                </a>
+
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-outline-success btn-lg">
+
+                    <i class="fa-solid fa-camera me-2"></i>
+
+                    Live Camera
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

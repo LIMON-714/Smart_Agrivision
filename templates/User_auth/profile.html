@@ -1,0 +1,1483 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+My Profile | SmartAgriVision
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+
+  <div class="container">
+
+    <!-- ===================================================== -->
+    <!-- PROFILE HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="card border-0 shadow-lg rounded-5 overflow-hidden">
+
+      <!-- ================================================= -->
+      <!-- COVER IMAGE -->
+      <!-- ================================================= -->
+
+      <div class="position-relative">
+
+        {% if profile.cover_image %}
+
+          <img
+            src="{{ profile.cover_image.url }}"
+            class="w-100"
+            style="height: 50px; object-fit: cover;"
+            alt="Cover Image"
+          >
+
+        {% else %}
+
+          <img
+            src="{% static 'images/profile/profile-cover.jpg' %}"
+            class="w-100"
+            style="height: 50px; object-fit: cover;"
+            alt="Cover Image"
+          >
+
+        {% endif %}
+
+        <!-- Overlay -->
+        <div
+          class="position-absolute top-0 start-0 w-100 h-100"
+          style="background: rgba(0, 0, 0, 0.35);">
+        </div>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- PROFILE BODY -->
+      <!-- ================================================= -->
+
+      <div class="card-body">
+
+        <div class="row align-items-center">
+
+
+          <!-- ================================================= -->
+          <!-- AVATAR -->
+          <!-- ================================================= -->
+
+          <div class="col-lg-3 text-center">
+
+            <div
+              class="position-relative d-inline-block"
+              style="margin-top: -100px;"
+            >
+
+              {% if profile.profile_image %}
+
+                <img
+                  src="{{ profile.profile_image.url }}"
+                  width="170"
+                  height="170"
+                  class="rounded-circle border border-5 border-white shadow"
+                  style="object-fit: cover;"
+                  alt="Profile Image"
+                >
+
+              {% else %}
+
+                <img
+                  src="{% static 'images/profile/default-user.png' %}"
+                  width="170"
+                  height="170"
+                  class="rounded-circle border border-5 border-white shadow"
+                  style="object-fit: cover;"
+                  alt="Profile Image"
+                >
+
+              {% endif %}
+
+
+              <!-- Online Status -->
+
+              <span
+                class="position-absolute bottom-0 end-0 bg-success border border-3 border-white rounded-circle"
+                style="width: 25px; height: 25px;"
+                title="Online">
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================================================= -->
+          <!-- USER INFORMATION -->
+          <!-- ================================================= -->
+
+          <div class="col-lg-6 text-center text-lg-start mt-3 mt-lg-0">
+
+            <h2 class="fw-bold mb-2">
+
+              {% if user.get_full_name %}
+                {{ user.get_full_name }}
+              {% else %}
+                {{ user.username }}
+              {% endif %}
+
+              <i class="fa-solid fa-circle-check text-primary"></i>
+
+            </h2>
+
+
+            <p class="text-muted mb-3">
+
+              <i class="fa-solid fa-envelope text-success me-2"></i>
+
+              {% if user.email %}
+                {{ user.email }}
+              {% else %}
+                Email not added
+              {% endif %}
+
+            </p>
+
+
+            <span class="badge bg-success px-3 py-2 me-2">
+              Active Member
+            </span>
+
+            <span class="badge bg-primary px-3 py-2">
+              AI Farmer
+            </span>
+
+          </div>
+
+
+          <!-- ================================================= -->
+          <!-- PROFILE BUTTONS -->
+          <!-- ================================================= -->
+
+          <div class="col-lg-3 text-center mt-4 mt-lg-0">
+
+            <a
+              href="{% url 'profile_edit' %}"
+              class="btn btn-success rounded-pill px-4 mb-2 w-100"
+            >
+
+              <i class="fa-solid fa-user-pen me-2"></i>
+
+              Edit Profile
+
+            </a>
+
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary rounded-pill px-4 w-100"
+              onclick="copyProfileLink()"
+            >
+
+              <i class="fa-solid fa-share-nodes me-2"></i>
+
+              Share Profile
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <hr class="my-4">
+
+
+        <!-- ================================================= -->
+        <!-- QUICK STATS -->
+        <!-- ================================================= -->
+
+        <div class="row text-center g-4">
+
+          <div class="col-6 col-md-3">
+
+            <h3 class="fw-bold text-success">
+              {{ total_detections|default:"0" }}
+            </h3>
+
+            <p class="text-muted mb-0">
+              AI Detections
+            </p>
+
+          </div>
+
+
+          <div class="col-6 col-md-3">
+
+            <h3 class="fw-bold text-primary">
+              {{ total_reports|default:"0" }}
+            </h3>
+
+            <p class="text-muted mb-0">
+              Reports
+            </p>
+
+          </div>
+
+
+          <div class="col-6 col-md-3">
+
+            <h3 class="fw-bold text-danger">
+              {{ accuracy|default:"0" }}%
+            </h3>
+
+            <p class="text-muted mb-0">
+              Accuracy
+            </p>
+
+          </div>
+
+
+          <div class="col-6 col-md-3">
+
+            <h3 class="fw-bold text-warning">
+              24/7
+            </h3>
+
+            <p class="text-muted mb-0">
+              Monitoring
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ===================================================== -->
+
+    <div class="row mt-5 g-4">
+
+
+      <!-- ===================================================== -->
+      <!-- LEFT COLUMN -->
+      <!-- ===================================================== -->
+
+      <div class="col-lg-4">
+
+
+        <!-- ================================================= -->
+        <!-- PERSONAL INFORMATION -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-success text-white rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-id-card me-2"></i>
+
+              Personal Information
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+
+            <!-- Full Name -->
+
+            <div class="mb-3">
+
+              <small class="text-muted">
+                Full Name
+              </small>
+
+              <br>
+
+              <strong>
+
+                {% if user.get_full_name %}
+                  {{ user.get_full_name }}
+                {% else %}
+                  {{ user.username }}
+                {% endif %}
+
+              </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Username -->
+
+            <div class="mb-3">
+
+              <small class="text-muted">
+                Username
+              </small>
+
+              <br>
+
+              <strong>
+                {{ user.username }}
+              </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Email -->
+
+            <div class="mb-3">
+
+              <small class="text-muted">
+                Email Address
+              </small>
+
+              <br>
+
+              <strong>
+
+                {% if user.email %}
+                  {{ user.email }}
+                {% else %}
+                  Not Added
+                {% endif %}
+
+              </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Phone -->
+
+            <div class="mb-3">
+
+              <small class="text-muted">
+                Phone Number
+              </small>
+
+              <br>
+
+              <strong>
+
+                {% if profile.phone %}
+                  {{ profile.phone }}
+                {% else %}
+                  Not Added
+                {% endif %}
+
+              </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Address -->
+
+            <div class="mb-3">
+
+              <small class="text-muted">
+                Address
+              </small>
+
+              <br>
+
+              <strong>
+
+                {% if profile.address %}
+                  {{ profile.address }}
+                {% else %}
+                  Not Added
+                {% endif %}
+
+              </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Member Since -->
+
+            <div>
+
+              <small class="text-muted">
+                Member Since
+              </small>
+
+              <br>
+
+              <strong>
+                {{ user.date_joined|date:"d M Y" }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- CONTACT INFORMATION -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-primary text-white rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-address-book me-2"></i>
+
+              Contact Information
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+
+            <!-- Location -->
+
+            <p>
+
+              <i class="fa-solid fa-location-dot text-danger me-2"></i>
+
+              {% if profile.district %}
+
+                {{ profile.district }}
+
+                {% if profile.division %}
+                  , {{ profile.division }}
+                {% endif %}
+
+                {% if profile.country %}
+                  , {{ profile.country }}
+                {% endif %}
+
+
+              {% elif profile.division %}
+
+                {{ profile.division }}
+
+                {% if profile.country %}
+                  , {{ profile.country }}
+                {% endif %}
+
+
+              {% elif profile.country %}
+
+                {{ profile.country }}
+
+
+              {% else %}
+
+                Not Added
+
+              {% endif %}
+
+            </p>
+
+
+            <!-- Phone -->
+
+            <p>
+
+              <i class="fa-solid fa-phone text-success me-2"></i>
+
+              {% if profile.phone %}
+                {{ profile.phone }}
+              {% else %}
+                Not Added
+              {% endif %}
+
+            </p>
+
+
+            <!-- Email -->
+
+            <p>
+
+              <i class="fa-solid fa-envelope text-primary me-2"></i>
+
+              {% if user.email %}
+                {{ user.email }}
+              {% else %}
+                Not Added
+              {% endif %}
+
+            </p>
+
+
+            <!-- Postal Code -->
+
+            {% if profile.postal_code %}
+
+              <p>
+
+                <i class="fa-solid fa-location-pin text-warning me-2"></i>
+
+                {{ profile.postal_code }}
+
+              </p>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- PROFILE COMPLETION -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-warning">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-chart-line me-2"></i>
+
+              Profile Completion
+
+            </h5>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between">
+
+              <span>
+                Completed
+              </span>
+
+              <strong>
+                {{ profile_completion }}%
+              </strong>
+
+            </div>
+
+
+            <div
+              class="progress my-3"
+              style="height: 10px;"
+            >
+
+              <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                style="width: {{ profile_completion }}%;"
+                aria-valuenow="{{ profile_completion }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+
+            </div>
+
+
+            <small class="text-muted">
+
+              Complete your profile to unlock all
+              SmartAgriVision features.
+
+            </small>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- RIGHT COLUMN -->
+      <!-- ===================================================== -->
+
+      <div class="col-lg-8">
+
+
+        <!-- ================================================= -->
+        <!-- DASHBOARD STATISTICS -->
+        <!-- ================================================= -->
+
+        <div class="row g-4 mb-4">
+
+
+          <!-- Total Detections -->
+
+          <div class="col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+              <div class="card-body">
+
+                <small class="text-muted">
+                  Total Detections
+                </small>
+
+                <h3 class="fw-bold text-success mt-2">
+                  {{ total_detections|default:"0" }}
+                </h3>
+
+                <div
+                  class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block"
+                >
+
+                  <i class="fa-solid fa-leaf fa-2x text-success"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Healthy Plants -->
+
+          <div class="col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+              <div class="card-body">
+
+                <small class="text-muted">
+                  Healthy Plants
+                </small>
+
+                <h3 class="fw-bold text-primary mt-2">
+                  {{ healthy_count|default:"0" }}
+                </h3>
+
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block"
+                >
+
+                  <i class="fa-solid fa-seedling fa-2x text-primary"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Reports -->
+
+          <div class="col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+              <div class="card-body">
+
+                <small class="text-muted">
+                  Reports
+                </small>
+
+                <h3 class="fw-bold text-warning mt-2">
+                  {{ total_reports|default:"0" }}
+                </h3>
+
+                <div
+                  class="bg-warning bg-opacity-10 rounded-circle p-3 d-inline-block"
+                >
+
+                  <i class="fa-solid fa-file-lines fa-2x text-warning"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Accuracy -->
+
+          <div class="col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+              <div class="card-body">
+
+                <small class="text-muted">
+                  AI Accuracy
+                </small>
+
+                <h3 class="fw-bold text-danger mt-2">
+                  {{ accuracy|default:"0" }}%
+                </h3>
+
+                <div
+                  class="bg-danger bg-opacity-10 rounded-circle p-3 d-inline-block"
+                >
+
+                  <i class="fa-solid fa-chart-line fa-2x text-danger"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- ABOUT ME -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-success text-white rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-user me-2"></i>
+
+              About Me
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+            {% if profile.bio %}
+
+              <p class="text-muted mb-0">
+                {{ profile.bio }}
+              </p>
+
+            {% else %}
+
+              <p class="text-muted mb-0">
+
+                No bio added yet.
+
+                <a href="{% url 'profile_edit' %}">
+                  Update your profile.
+                </a>
+
+              </p>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- AI DETECTION SUMMARY -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-dark text-white rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-microchip me-2"></i>
+
+              AI Detection Summary
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+
+            <!-- Healthy -->
+
+            <div class="mb-4">
+
+              <div class="d-flex justify-content-between">
+
+                <span>
+                  Healthy Plants
+                </span>
+
+                <strong>
+                  {{ healthy_percentage|default:"0" }}%
+                </strong>
+
+              </div>
+
+
+              <div class="progress mt-2">
+
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: {{ healthy_percentage|default:'0' }}%;"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Disease -->
+
+            <div class="mb-4">
+
+              <div class="d-flex justify-content-between">
+
+                <span>
+                  Disease Detected
+                </span>
+
+                <strong>
+                  {{ disease_percentage|default:"0" }}%
+                </strong>
+
+              </div>
+
+
+              <div class="progress mt-2">
+
+                <div
+                  class="progress-bar bg-danger"
+                  role="progressbar"
+                  style="width: {{ disease_percentage|default:'0' }}%;"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Pending -->
+
+            <div>
+
+              <div class="d-flex justify-content-between">
+
+                <span>
+                  Pending Analysis
+                </span>
+
+                <strong>
+                  {{ pending_percentage|default:"0" }}%
+                </strong>
+
+              </div>
+
+
+              <div class="progress mt-2">
+
+                <div
+                  class="progress-bar bg-warning"
+                  role="progressbar"
+                  style="width: {{ pending_percentage|default:'0' }}%;"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- RECENT ACHIEVEMENTS -->
+        <!-- ================================================= -->
+
+
+
+
+        <!-- ================================================= -->
+        <!-- RECENT DETECTION HISTORY -->
+        <!-- ================================================= -->
+
+
+      <div class="card border-0 shadow rounded-4 mb-4">
+
+        <div class="card-header bg-success text-white rounded-top-4">
+
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-magnifying-glass-chart me-2"></i>
+
+              Recent Detection History
+
+            </h5>
+
+            <span class="badge bg-light text-success">
+              {{ total_detections|default:"0" }} Records
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-light">
+
+              <tr>
+
+                <th>#</th>
+
+                <th>Preview</th>
+
+                <th>Prediction</th>
+
+                <th>Confidence</th>
+
+                <th>Model</th>
+
+                <th>Date</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              {% for detection in recent_detections %}
+
+              <tr>
+
+                <!-- ========================================= -->
+                <!-- NUMBER -->
+                <!-- ========================================= -->
+
+                <td>
+                  {{ forloop.counter }}
+                </td>
+
+
+                <!-- ========================================= -->
+                <!-- PREVIEW -->
+                <!-- ========================================= -->
+
+                <td>
+
+                  {% if detection.detection_type == "video" %}
+
+                    <!-- RESULT VIDEO -->
+
+                    {% if detection.result_video %}
+
+                      <video
+                        width="100"
+                        height="70"
+                        class="rounded-3 border"
+                        muted
+                        preload="metadata"
+                        controls
+                      >
+
+                        <source
+                          src="{{ detection.result_video.url }}"
+                          type="video/mp4"
+                        >
+
+                        Your browser does not support video.
+
+                      </video>
+
+
+                    {% elif detection.video %}
+
+                      <!-- ORIGINAL VIDEO FALLBACK -->
+
+                      <video
+                        width="100"
+                        height="70"
+                        class="rounded-3 border"
+                        muted
+                        preload="metadata"
+                        controls
+                      >
+
+                        <source
+                          src="{{ detection.video.url }}"
+                          type="video/mp4"
+                        >
+
+                        Your browser does not support video.
+
+                      </video>
+
+
+                    {% else %}
+
+                      <div
+                        class="bg-secondary rounded-3 d-flex align-items-center justify-content-center"
+                        style="width:100px;height:70px;"
+                      >
+
+                        <i class="fa-solid fa-video fa-lg text-white"></i>
+
+                      </div>
+
+                    {% endif %}
+
+
+                  {% elif detection.image %}
+
+                    <!-- IMAGE RESULT -->
+
+                    <img
+                      src="{{ detection.image.url }}"
+                      width="100"
+                      height="70"
+                      class="rounded-3 border"
+                      style="object-fit:cover;"
+                      alt="{{ detection.predicted_class|default:'Detection Image' }}"
+                    >
+
+
+                  {% else %}
+
+                    <!-- NO PREVIEW -->
+
+                    <div
+                      class="bg-secondary rounded-3 d-flex align-items-center justify-content-center"
+                      style="width:100px;height:70px;"
+                    >
+
+                      <i class="fa-solid fa-file fa-lg text-white"></i>
+
+                    </div>
+
+                  {% endif %}
+
+                </td>
+
+
+                <!-- ========================================= -->
+                <!-- PREDICTION -->
+                <!-- ========================================= -->
+
+                <td>
+
+                  {% if detection.predicted_class %}
+
+                    <strong>
+                      {{ detection.predicted_class }}
+                    </strong>
+
+                  {% else %}
+
+                    <span class="text-dark">
+                      Processing...
+                    </span>
+
+                  {% endif %}
+
+                </td>
+
+
+                <!-- ========================================= -->
+                <!-- CONFIDENCE -->
+                <!-- ========================================= -->
+
+                <td>
+
+                  {% if detection.predicted_class == "Processing..." %}
+
+                    <span class="badge bg-warning text-dark">
+                      Processing
+                    </span>
+
+                  {% elif detection.confidence >= 80 %}
+
+                    <span class="badge bg-success">
+                      {{ detection.confidence|floatformat:2 }}%
+                    </span>
+
+                  {% elif detection.confidence >= 50 %}
+
+                    <span class="badge bg-warning text-dark">
+                      {{ detection.confidence|floatformat:2 }}%
+                    </span>
+
+                  {% else %}
+
+                    <span class="badge bg-danger">
+                      {{ detection.confidence|floatformat:2 }}%
+                    </span>
+
+                  {% endif %}
+
+                </td>
+
+
+                <!-- ========================================= -->
+                <!-- MODEL -->
+                <!-- ========================================= -->
+
+                <td>
+
+                  <span class="badge bg-info text-dark">
+
+                    {{ detection.model_name|default:"Unknown" }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- ========================================= -->
+                <!-- DATE -->
+                <!-- ========================================= -->
+
+                <td>
+
+                  {% if detection.created_at %}
+
+                    <span>
+                      {{ detection.created_at|date:"d M Y" }}
+                    </span>
+
+                    <br>
+
+                    <small class="text-dark">
+                      {{ detection.created_at|date:"h:i A" }}
+                    </small>
+
+                  {% else %}
+
+                    -
+
+                  {% endif %}
+
+                </td>
+
+              </tr>
+
+
+              {% empty %}
+
+              <tr>
+
+                <td
+                  colspan="6"
+                  class="text-center py-5 text-muted"
+                >
+
+                  <i class="fa-solid fa-leaf fa-2x mb-2 d-block"></i>
+
+                  No Detection History Found.
+
+                </td>
+
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+        
+        <!-- ================================================= -->
+        <!-- QUICK ACTIONS -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-warning rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-bolt me-2"></i>
+
+              Quick Actions
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+            <div class="row g-3">
+
+
+              <!-- Edit Profile -->
+
+              <div class="col-md-4">
+
+                <a
+                  href="{% url 'profile_edit' %}"
+                  class="btn btn-success w-100"
+                >
+
+                  <i class="fa-solid fa-user-pen me-2"></i>
+
+                  Edit Profile
+
+                </a>
+
+              </div>
+
+
+              <!-- Change Password -->
+
+              <div class="col-md-4">
+
+                <a
+                  href="{% url 'change_password' %}"
+                  class="btn btn-primary w-100"
+                >
+
+                  <i class="fa-solid fa-key me-2"></i>
+
+                  Change Password
+
+                </a>
+
+              </div>
+
+
+              <!-- Share Profile -->
+
+              <div class="col-md-4">
+
+                <button
+                  type="button"
+                  onclick="copyProfileLink()"
+                  class="btn btn-dark w-100"
+                >
+
+                  <i class="fa-solid fa-share-nodes me-2"></i>
+
+                  Share Profile
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- ACCOUNT SECURITY -->
+        <!-- ================================================= -->
+
+        <div class="card border-0 shadow rounded-4 mb-4">
+
+          <div class="card-header bg-danger text-white rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-shield-halved me-2"></i>
+
+              Account Security
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+            <div
+              class="d-flex justify-content-between align-items-center flex-wrap gap-3"
+            >
+
+              <div>
+
+                <h6 class="fw-bold">
+                  Password
+                </h6>
+
+                <small class="text-muted">
+                  Keep your password secure.
+                </small>
+
+              </div>
+
+
+              <a
+                href="{% url 'change_password' %}"
+                class="btn btn-outline-danger rounded-pill"
+              >
+
+                <i class="fa-solid fa-key me-2"></i>
+
+                Change Password
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+        
+        <!-- ================================================= -->
+        <!-- DANGER ZONE -->
+        <!-- ================================================= -->
+
+        <div class="card border-danger shadow rounded-4 mb-5">
+
+          <div class="card-header bg-danger text-white rounded-top-4">
+
+            <h5 class="mb-0">
+
+              <i class="fa-solid fa-triangle-exclamation me-2"></i>
+
+              Danger Zone
+
+            </h5>
+
+          </div>
+
+
+          <div class="card-body">
+
+            <p class="text-muted">
+
+              Deleting your account will permanently remove
+              your account and associated profile information.
+
+            </p>
+
+
+            <form
+              method="POST"
+              action="{% url 'delete_account' %}"
+            >
+
+              {% csrf_token %}
+
+
+              <button
+                type="submit"
+                class="btn btn-outline-danger rounded-pill"
+                onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
+              >
+
+                <i class="fa-solid fa-trash me-2"></i>
+
+                Delete My Account
+
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SHARE PROFILE SCRIPT -->
+<!-- ===================================================== -->
+
+<script>
+
+function copyProfileLink() {
+
+    const profileUrl = window.location.href;
+
+    if (navigator.clipboard) {
+
+        navigator.clipboard.writeText(profileUrl)
+
+            .then(function () {
+
+                alert("Profile link copied successfully!");
+
+            })
+
+            .catch(function () {
+
+                alert("Unable to copy profile link.");
+
+            });
+
+    } else {
+
+        const tempInput = document.createElement("input");
+
+        tempInput.value = profileUrl;
+
+        document.body.appendChild(tempInput);
+
+        tempInput.select();
+
+        try {
+
+            document.execCommand("copy");
+
+            alert("Profile link copied successfully!");
+
+        } catch (error) {
+
+            alert("Unable to copy profile link.");
+
+        }
+
+        document.body.removeChild(tempInput);
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

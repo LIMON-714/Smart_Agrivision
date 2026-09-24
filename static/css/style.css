@@ -1,0 +1,1676 @@
+/*==================================================
+        SmartAgriVision
+        Professional AI Theme
+        Author : SmartAgriVision
+===================================================*/
+
+
+/*==================================================
+                    Google Font
+===================================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+
+/*==================================================
+                    Root Colors
+===================================================*/
+
+:root{
+
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+
+    --secondary:#0F172A;
+
+    --background:#0B1120;
+
+    --card:#1E293B;
+
+    --border:#334155;
+
+    --text:#FFFFFF;
+
+    --text-light:#CBD5E1;
+
+    --success:#22C55E;
+
+    --danger:#EF4444;
+
+    --warning:#F59E0B;
+
+    --shadow:0 15px 40px rgba(0,0,0,.35);
+
+    --radius:14px;
+
+    --transition:.35s ease;
+
+}
+
+
+
+/*==================================================
+                    Reset
+===================================================*/
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+}
+
+
+
+/*==================================================
+                    Scrollbar
+===================================================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#07101d;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:50px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary-hover);
+
+}
+
+
+
+/*==================================================
+                    Selection
+===================================================*/
+
+::selection{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+
+
+/*==================================================
+                    Links
+===================================================*/
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+    transition:var(--transition);
+
+}
+
+
+
+a:hover{
+
+    color:var(--primary);
+
+}
+
+
+
+/*==================================================
+                    Images
+===================================================*/
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+
+
+/*==================================================
+                    Wrapper
+===================================================*/
+
+.wrapper{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+/*==================================================
+                    Typography
+===================================================*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+
+    font-weight:700;
+
+    color:#fff;
+
+}
+
+p{
+
+    color:var(--text-light);
+
+    line-height:1.8;
+
+}
+
+
+
+/*==================================================
+                Bootstrap Override
+===================================================*/
+
+.container{
+
+    max-width:1320px;
+
+}
+
+
+
+.bg-light{
+
+    background:#111827 !important;
+
+}
+
+
+
+.text-muted{
+
+    color:var(--text-light)!important;
+
+}
+
+
+
+/*==================================================
+                    NAVBAR
+==================================================*/
+
+.navbar{
+
+    background:rgba(15,23,42,.95)!important;
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    padding:16px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+
+    transition:.35s ease;
+
+    z-index:999;
+
+}
+
+
+
+.navbar-brand{
+
+    color:#fff!important;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    transition:.3s;
+
+}
+
+
+
+.navbar-brand:hover{
+
+    color:#60A5FA!important;
+
+}
+
+
+
+.navbar-brand i{
+
+    color:#22C55E;
+
+    margin-right:8px;
+
+}
+
+
+
+/*==========================
+        Menu
+===========================*/
+
+.navbar-nav{
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+
+.nav-item{
+
+    position:relative;
+
+}
+
+
+
+.nav-link{
+
+    color:#E2E8F0!important;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    padding:10px 16px!important;
+
+    border-radius:10px;
+
+    transition:all .35s ease;
+
+}
+
+
+
+.nav-link:hover{
+
+    color:#fff!important;
+
+    background:rgba(37,99,235,.15);
+
+}
+
+
+
+.nav-link.active{
+
+    background:linear-gradient(135deg,#2563EB,#1D4ED8);
+
+    color:#fff!important;
+
+}
+
+
+
+.nav-link::after{
+
+    display:none;
+
+}
+
+
+
+/*==========================
+      Dropdown
+===========================*/
+
+.dropdown-menu{
+
+    background:#1E293B;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:12px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+}
+
+
+
+.dropdown-item{
+
+    color:#E2E8F0;
+
+    border-radius:10px;
+
+    padding:12px 16px;
+
+    transition:.3s;
+
+}
+
+
+
+.dropdown-item:hover{
+
+    background:#2563EB;
+
+    color:#fff;
+
+}
+
+
+
+/*==================================================
+            Navbar Right Section
+==================================================*/
+
+.nav-search-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    height:46px;
+
+    padding:0 20px;
+
+    border:none;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.08);
+
+    color:#fff;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.35s;
+
+    backdrop-filter:blur(10px);
+
+}
+
+
+
+.nav-search-btn:hover{
+
+    background:#2D3748;
+
+    border-color:#fff;
+
+    color:#fff;
+
+}
+
+
+
+/* Login */
+
+.btn-login{
+
+    background:transparent;
+
+    color:#fff;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    padding:10px 22px;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.btn-login:hover{
+
+    background:#2D3748;
+
+    border-color:#fff;
+
+    color:#fff;
+
+}
+
+
+/* Register */
+
+.btn-register{
+
+    background:#2D3748;
+
+    color:#fff;
+
+    border:1px solid #2D3748;
+
+    padding:10px 22px;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.btn-register:hover{
+
+    background:transparent;
+
+    border-color:#fff;
+
+    color:#fff;
+
+}
+
+
+
+
+
+/*==========================
+        User
+===========================*/
+
+.nav-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#fff!important;
+
+}
+
+
+
+.user-avatar{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#2563EB,#3B82F6);
+
+    color:#fff;
+
+    font-size:15px;
+
+    box-shadow:0 10px 20px rgba(37,99,235,.35);
+
+}
+
+
+
+/*==========================
+      Mobile Navbar
+===========================*/
+
+.navbar-toggler{
+
+    border:none;
+
+    box-shadow:none!important;
+
+}
+
+
+
+
+.navbar-toggler:focus{
+
+    box-shadow:none!important;
+
+}
+
+
+
+.navbar-toggler-icon{
+
+    filter:invert(1);
+
+}
+
+
+.nav-link:hover::after{
+
+    width:100%;
+
+}
+
+
+
+/*==================================================
+                Dropdown
+===================================================*/
+
+.dropdown-menu{
+
+    background:#1E293B;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:12px;
+
+    padding:12px;
+
+}
+
+
+
+.dropdown-item{
+
+    color:white;
+
+    border-radius:8px;
+
+    padding:10px 15px;
+
+    transition:.3s;
+
+}
+
+
+
+.dropdown-item:hover{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+
+
+/*==================================================
+                    Buttons
+===================================================*/
+
+.btn{
+
+    border-radius:10px;
+
+    transition:.35s;
+
+    font-weight:600;
+
+}
+
+
+
+.btn-success{
+
+    background:var(--primary);
+
+    border:none;
+
+}
+
+.btn-outline-success{
+
+    border:2px solid var(--primary);
+
+    color:white;
+
+}
+
+
+
+.btn-outline-success:hover{
+
+    background:var(--primary);
+
+    border-color:var(--primary);
+
+    color:white;
+
+}
+
+/*==================================================
+                    Hero Section
+===================================================*/
+
+.hero-section{
+
+    padding:100px 0;
+
+    background:linear-gradient(135deg,#0B1120,#111827);
+
+}
+
+.hero-section h1{
+
+    font-size:58px;
+
+    line-height:1.2;
+
+    margin-bottom:25px;
+
+}
+
+.hero-section p{
+
+    font-size:18px;
+
+}
+
+.hero-section img{
+
+    animation:float 5s ease-in-out infinite;
+
+}
+
+
+
+/*==================================================
+                    Badge
+===================================================*/
+
+.badge{
+
+    padding:10px 18px;
+
+    font-size:15px;
+
+    border-radius:30px;
+
+}
+
+
+
+/*==================================================
+                    Cards
+===================================================*/
+
+.card{
+
+    background:var(--card);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    border-radius:var(--radius);
+
+    transition:var(--transition);
+
+    overflow:hidden;
+
+    color:white;
+
+    box-shadow:var(--shadow);
+
+}
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+    border-color:var(--primary);
+
+}
+
+.card-body{
+
+    padding:35px;
+
+}
+
+.card h4{
+
+    margin:20px 0;
+
+}
+
+.card p{
+
+    margin-bottom:25px;
+
+}
+
+
+
+/*==================================================
+                    Statistics
+===================================================*/
+
+.bg-light{
+
+    background:#111827!important;
+
+}
+
+.bg-light h2{
+
+    color:var(--primary);
+
+    font-size:46px;
+
+}
+
+.bg-light p{
+
+    color:var(--text-light);
+
+}
+
+
+
+/*==================================================
+                    List Group
+===================================================*/
+
+.list-group-item{
+
+    background:transparent;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    padding:15px;
+
+}
+
+
+
+/*==================================================
+                    Sidebar
+===================================================*/
+
+.sidebar{
+
+    width:270px;
+
+    background:#0F172A;
+
+    min-height:100vh;
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    padding:30px 20px;
+
+    border-right:1px solid rgba(255,255,255,.08);
+
+    z-index:1000;
+
+}
+
+.sidebar-header{
+
+    margin-bottom:40px;
+
+}
+
+.sidebar-header h5{
+
+    color:white;
+
+    font-size:24px;
+
+}
+
+.sidebar-menu{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+.sidebar-menu li{
+
+    margin-bottom:8px;
+
+}
+
+.sidebar-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    color:#CBD5E1;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+}
+
+.sidebar-menu a:hover{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+.sidebar-menu i{
+
+    width:22px;
+
+    text-align:center;
+
+}
+
+
+
+/*==================================================
+                    Main Content
+===================================================*/
+
+#main-content{
+
+    padding:40px;
+
+}
+
+
+
+/*==================================================
+                    Forms
+===================================================*/
+
+.form-control{
+
+    background:#111827;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    color:white;
+
+    border-radius:10px;
+
+    padding:14px;
+
+}
+
+.form-control:focus{
+
+    background:#111827;
+
+    color:white;
+
+    border-color:var(--primary);
+
+    box-shadow:none;
+
+}
+
+
+
+/*==================================================
+                    Modal
+===================================================*/
+
+.modal-content{
+
+    background:#1E293B;
+
+    color:white;
+
+    border-radius:15px;
+
+}
+
+.modal-header{
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.modal-footer{
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+}
+/*-- Image*/
+.hero-image{
+    border-radius:25px !important;
+    background:#0D1423;
+    padding:10px;
+}
+
+
+
+/*==================================================
+                    Tables
+===================================================*/
+
+.table{
+
+    color:white;
+
+}
+
+.table thead{
+
+    background:#0F172A;
+
+}
+
+.table tbody tr{
+
+    border-color:rgba(255,255,255,.06);
+
+}
+
+
+
+/*==================================================
+                    Detection Box
+===================================================*/
+
+.detection-box{
+
+    background:#1E293B;
+
+    border-radius:15px;
+
+    padding:30px;
+
+    box-shadow:var(--shadow);
+
+    border:1px solid rgba(255,255,255,.06);
+
+}
+
+/*==================================================
+                    Footer
+===================================================*/
+
+.footer{
+
+    background:#0F172A;
+
+    padding:70px 0 25px;
+
+    margin-top:80px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+}
+
+.footer h4,
+.footer h5{
+
+    color:#fff;
+
+    margin-bottom:20px;
+
+}
+
+.footer p{
+
+    color:var(--text-light);
+
+}
+
+.footer ul{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+.footer ul li{
+
+    margin-bottom:12px;
+
+}
+
+.footer ul li a{
+
+    color:var(--text-light);
+
+    transition:.3s;
+
+}
+
+.footer ul li a:hover{
+
+    color:var(--primary);
+
+    padding-left:8px;
+
+}
+
+.footer .fab{
+
+    width:45px;
+
+    height:45px;
+
+    line-height:45px;
+
+    text-align:center;
+
+    border-radius:50%;
+
+    background:#1E293B;
+
+    color:#fff;
+
+    transition:.35s;
+
+}
+
+.footer .fab:hover{
+
+    background:var(--primary);
+
+    transform:translateY(-5px);
+
+}
+
+.footer hr{
+
+    border-color:rgba(255,255,255,.08);
+
+    margin:40px 0 25px;
+
+}
+
+
+
+
+
+/*==================================================
+                Scroll To Top
+===================================================*/
+
+.scroll-top{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:25px;
+
+    width:50px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    color:white;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    z-index:999;
+
+    transition:.35s;
+
+    box-shadow:var(--shadow);
+
+}
+
+.scroll-top:hover{
+
+    background:var(--primary-hover);
+
+    transform:translateY(-6px);
+
+}
+
+
+
+/*==================================================
+                    Preloader
+===================================================*/
+
+#preloader{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:#0B1120;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+}
+
+.loader{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.loader span{
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    animation:loading .8s infinite alternate;
+
+}
+
+.loader span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.loader span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+
+
+/*==================================================
+                    Animations
+===================================================*/
+
+@keyframes loading{
+
+    from{
+
+        transform:translateY(0);
+
+        opacity:.5;
+
+    }
+
+    to{
+
+        transform:translateY(-18px);
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(-15px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+
+
+/*==================================================
+                Glass Effect
+===================================================*/
+
+.glass{
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:16px;
+
+}
+
+
+
+/*==================================================
+                Section Title
+===================================================*/
+
+.section-title{
+
+    text-align:center;
+
+    margin-bottom:60px;
+
+}
+
+.section-title h2{
+
+    font-size:42px;
+
+    margin-bottom:15px;
+
+}
+
+.section-title p{
+
+    max-width:700px;
+
+    margin:auto;
+
+}
+
+
+
+/*==================================================
+                Utility Classes
+===================================================*/
+
+.text-primary{
+
+    color:var(--primary)!important;
+
+}
+
+.bg-primary{
+
+    background:var(--primary)!important;
+
+}
+
+.rounded-xl{
+
+    border-radius:18px;
+
+}
+
+.shadow-lg{
+
+    box-shadow:var(--shadow)!important;
+
+}
+
+.border-dark-custom{
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+/*==================================================
+            Responsive Design
+===================================================*/
+
+@media (max-width:1200px){
+
+    .hero-section h1{
+
+        font-size:48px;
+
+    }
+
+    .container{
+
+        max-width:1140px;
+
+    }
+
+}
+
+@media (max-width:992px){
+
+    .navbar{
+
+        padding:15px 0;
+
+    }
+
+    .navbar-nav{
+
+        margin-top:20px;
+
+        text-align:center;
+
+    }
+
+    .navbar .btn{
+
+        width:100%;
+
+        margin-top:10px;
+
+    }
+
+    .hero-section{
+
+        padding:80px 0;
+
+        text-align:center;
+
+    }
+
+    .hero-section h1{
+
+        font-size:42px;
+
+    }
+
+    .hero-section img{
+
+        margin-top:40px;
+
+    }
+
+    .sidebar{
+
+        position:relative;
+
+        width:100%;
+
+        min-height:auto;
+
+        border-right:none;
+
+        border-bottom:1px solid rgba(255,255,255,.08);
+
+    }
+
+    #main-content{
+
+        margin-left:0;
+
+        padding:30px;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    h1{
+
+        font-size:34px;
+
+    }
+
+    h2{
+
+        font-size:28px;
+
+    }
+
+    .hero-section{
+
+        padding:60px 0;
+
+    }
+
+    .hero-section h1{
+
+        font-size:34px;
+
+    }
+
+    .card{
+
+        margin-bottom:25px;
+
+    }
+
+    .btn{
+
+        width:100%;
+
+        margin-bottom:12px;
+
+    }
+
+    .footer{
+
+        text-align:center;
+
+    }
+
+    .footer .d-flex{
+
+        justify-content:center;
+
+    }
+
+    .scroll-top{
+
+        width:45px;
+
+        height:45px;
+
+        right:18px;
+
+        bottom:18px;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    .container{
+
+        padding-left:20px;
+
+        padding-right:20px;
+
+    }
+
+    .navbar-brand{
+
+        font-size:22px;
+
+    }
+
+    .hero-section h1{
+
+        font-size:30px;
+
+    }
+
+    .hero-section p{
+
+        font-size:16px;
+
+    }
+
+    .badge{
+
+        font-size:13px;
+
+    }
+
+    .card-body{
+
+        padding:25px;
+
+    }
+
+    .section-title h2{
+
+        font-size:28px;
+
+    }
+
+}
+
+/*==================================================
+            Smooth Animation
+===================================================*/
+
+.card,
+.btn,
+.nav-link,
+.dropdown-item,
+.sidebar-menu a,
+.footer a,
+.scroll-top{
+
+    transition:all .35s ease;
+
+}
+
+/*==================================================
+            Focus Style
+===================================================*/
+
+button:focus,
+input:focus,
+textarea:focus,
+select:focus{
+
+    outline:none!important;
+
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.25)!important;
+
+}
+
+/*==================================================
+            Custom Utilities
+===================================================*/
+
+.mt-80{
+
+    margin-top:80px;
+
+}
+
+.mb-80{
+
+    margin-bottom:80px;
+
+}
+
+.py-80{
+
+    padding:80px 0;
+
+}
+
+.text-gradient{
+
+    background: linear-gradient(90deg,#2563EB,#22C55E);
+
+    background-clip: text;
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    color: transparent;
+
+}
+
+.glow{
+
+    box-shadow:0 0 25px rgba(37,99,235,.35);
+
+}
+
+/*==================================================
+            End of Style.css
+===================================================*/

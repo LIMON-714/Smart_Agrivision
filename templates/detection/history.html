@@ -1,0 +1,507 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Detection History | InnoCLave AgriVision
+{% endblock %}
+
+{% block content %}
+
+<section class="page-banner py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center gy-4">
+
+            <div class="col-lg-8">
+
+                <span class="badge bg-primary px-3 py-2 mb-3">
+                    AI DETECTION HISTORY
+                </span>
+
+                <h1 class="display-5 fw-bold text-white mb-3">
+                    Detection History
+                </h1>
+
+                <p class="text-light opacity-75 mb-0">
+                    All image, video and live camera detection
+                    records stored in your database.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-lg-end">
+
+                <a
+                    href="{% url 'detection:image_detection' %}"
+                    class="btn btn-register"
+                >
+                    <i class="fa-solid fa-plus me-2"></i>
+                    New Detection
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- DATABASE STATISTICS -->
+<!-- ========================================================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- TOTAL -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-body text-center p-4">
+
+                        <i class="fa-solid fa-database fa-2x text-primary mb-3"></i>
+
+                        <h2 class="text-white fw-bold">
+                            {{ detection_count }}
+                        </h2>
+
+                        <p class="text-secondary mb-0">
+                            Total Records
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-body text-center p-4">
+
+                        <i class="fa-solid fa-image fa-2x text-success mb-3"></i>
+
+                        <h2 class="text-white fw-bold">
+                            {{ image_count }}
+                        </h2>
+
+                        <p class="text-secondary mb-0">
+                            Image
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VIDEO -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-body text-center p-4">
+
+                        <i class="fa-solid fa-video fa-2x text-warning mb-3"></i>
+
+                        <h2 class="text-white fw-bold">
+                            {{ video_count }}
+                        </h2>
+
+                        <p class="text-secondary mb-0">
+                            Video
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CAMERA -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-body text-center p-4">
+
+                        <i class="fa-solid fa-camera fa-2x text-info mb-3"></i>
+
+                        <h2 class="text-white fw-bold">
+                            {{ camera_count }}
+                        </h2>
+
+                        <p class="text-secondary mb-0">
+                            Live Camera
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- HISTORY TABLE -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="card bg-dark border-0 shadow-lg rounded-4">
+
+            <div class="card-header bg-transparent border-secondary py-4">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                    <div>
+
+                        <h4 class="text-white fw-bold mb-1">
+
+                            <i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>
+
+                            Detection Records
+
+                        </h4>
+
+                        <p class="text-secondary mb-0 small">
+
+                            Real database records only.
+
+                        </p>
+
+                    </div>
+
+                    <span class="badge bg-primary px-3 py-2">
+
+                        {{ detection_count }} Records
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-dark table-hover align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="px-3">
+                                    #
+                                </th>
+
+                                <th>
+                                    Type
+                                </th>
+
+                                <th>
+                                    Preview
+                                </th>
+
+                                <th>
+                                    Prediction
+                                </th>
+
+                                <th>
+                                    Confidence
+                                </th>
+
+                                <th>
+                                    Model
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th class="text-center">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for detection in detections %}
+
+                            <tr>
+
+                                <td class="px-3">
+
+                                    {{ forloop.counter }}
+
+                                </td>
+
+
+                                <!-- TYPE -->
+
+                                <td>
+
+                                    {% if detection.detection_type == "image" %}
+
+                                        <span class="badge bg-success">
+
+                                            <i class="fa-solid fa-image me-1"></i>
+
+                                            Image
+
+                                        </span>
+
+                                    {% elif detection.detection_type == "video" %}
+
+                                        <span class="badge bg-warning text-dark">
+
+                                            <i class="fa-solid fa-video me-1"></i>
+
+                                            Video
+
+                                        </span>
+
+                                    {% elif detection.detection_type == "camera" %}
+
+                                        <span class="badge bg-info text-dark">
+
+                                            <i class="fa-solid fa-camera me-1"></i>
+
+                                            Live Camera
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- PREVIEW -->
+
+                                <td>
+
+                                    {% if detection.detection_type == "video" %}
+
+                                        {% if detection.result_video %}
+
+                                            <video
+                                                width="75"
+                                                height="60"
+                                                class="rounded-3"
+                                                muted
+                                                preload="metadata"
+                                            >
+                                                <source src="{{ detection.result_video.url }}">
+                                            </video>
+
+                                        {% elif detection.video %}
+
+                                            <video
+                                                width="75"
+                                                height="60"
+                                                class="rounded-3"
+                                                muted
+                                                preload="metadata"
+                                            >
+                                                <source src="{{ detection.video.url }}">
+                                            </video>
+
+                                        {% endif %}
+
+                                    {% elif detection.image %}
+
+                                        <img
+                                            src="{{ detection.image.url }}"
+                                            width="65"
+                                            height="65"
+                                            class="rounded-3"
+                                            style="object-fit:cover;"
+                                            alt="{{ detection.predicted_class }}"
+                                        >
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- PREDICTION -->
+
+                                <td>
+
+                                    <strong class="text-white">
+
+                                        {{ detection.predicted_class }}
+
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- CONFIDENCE -->
+
+                                <td>
+
+                                    {% if detection.predicted_class == "Processing..." %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            Processing
+                                        </span>
+
+                                    {% elif detection.confidence >= 80 %}
+
+                                        <span class="badge bg-success">
+                                            {{ detection.confidence|floatformat:2 }}%
+                                        </span>
+
+                                    {% elif detection.confidence >= 50 %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            {{ detection.confidence|floatformat:2 }}%
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+                                            {{ detection.confidence|floatformat:2 }}%
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- MODEL -->
+
+                                <td>
+
+                                    <span class="badge bg-info text-dark">
+
+                                        {{ detection.model_name }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    <span class="text-light">
+
+                                        {{ detection.created_at|date:"d M Y" }}
+
+                                    </span>
+
+                                    <br>
+
+                                    <small class="text-secondary">
+
+                                        {{ detection.created_at|date:"h:i A" }}
+
+                                    </small>
+
+                                </td>
+
+
+                                <!-- ACTION -->
+
+                                <td class="text-center">
+
+                                    <div class="d-flex justify-content-center gap-2">
+
+                                        <a
+                                            href="{% url 'detection:detection_detail' detection.pk %}"
+                                            class="btn btn-sm btn-outline-info"
+                                        >
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+
+                                        <a
+                                            href="{% url 'detection:delete_detection' detection.pk %}"
+                                            class="btn btn-sm btn-outline-danger"
+                                        >
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="8" class="text-center py-5">
+
+                                    <i class="fa-solid fa-folder-open fa-3x text-secondary mb-3"></i>
+
+                                    <h5 class="text-white">
+                                        No Detection History
+                                    </h5>
+
+                                    <p class="text-secondary">
+                                        No detection record exists in the database.
+                                    </p>
+
+                                    <a
+                                        href="{% url 'detection:image_detection' %}"
+                                        class="btn btn-register"
+                                    >
+                                        Start Detection
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,1536 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Video Detection | SmartAgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================================= -->
+<!-- PAGE HEADER -->
+<!-- ========================================================= -->
+
+<section class="page-banner py-5">
+
+    <div class="container text-center">
+
+        <span class="badge bg-danger px-3 py-2 mb-3">
+            <i class="fa-solid fa-video me-1"></i>
+            AI VIDEO DETECTION
+        </span>
+
+        <h1 class="display-5 fw-bold mb-3">
+            Plant Disease Video Detection
+        </h1>
+
+        <p class="lead text-secondary mx-auto"
+           style="max-width:760px;">
+
+            Upload a plant leaf or vegetable video
+            and let SmartAgriVision analyze it using AI.
+
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- UPLOAD SECTION -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-xl-9">
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                    <!-- HEADER -->
+
+                    <div class="card-header bg-dark text-white py-3">
+
+                        <h4 class="fw-bold mb-0">
+
+                            <i class="fa-solid fa-video me-2"></i>
+
+                            Upload Detection Video
+
+                        </h4>
+
+                    </div>
+
+
+                    <!-- BODY -->
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <form
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="videoDetectionForm"
+                        >
+
+                            {% csrf_token %}
+
+
+                            <!-- UPLOAD AREA -->
+
+                            <div class="video-upload-box">
+
+                                <div class="video-upload-icon">
+
+                                    <i class="fa-solid fa-file-video"></i>
+
+                                </div>
+
+
+                                <h3 class="fw-bold mb-3">
+
+                                    Upload Your Plant Video
+
+                                </h3>
+
+
+                                <p class="text-secondary mb-4">
+
+                                    Select a clear plant or crop video
+                                    for AI-powered classification.
+
+                                </p>
+
+
+                                <!-- FILE INPUT -->
+
+                                <input
+                                    type="file"
+                                    name="video"
+                                    id="videoInput"
+                                    class="form-control"
+                                    accept=".mp4,.avi,.mov,.mkv,.webm,video/*"
+                                    required
+                                >
+
+
+                                <!-- SELECTED FILE -->
+
+                                <div
+                                    id="selectedVideoInfo"
+                                    class="selected-video-info mt-4"
+                                    style="display:none;"
+                                >
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="file-icon">
+
+                                            <i class="fa-solid fa-file-video"></i>
+
+                                        </div>
+
+
+                                        <div class="text-start">
+
+                                            <div class="fw-bold">
+                                                Selected Video
+                                            </div>
+
+                                            <div
+                                                id="selectedVideoName"
+                                                class="small text-secondary"
+                                            >
+                                            </div>
+
+                                            <div
+                                                id="selectedVideoSize"
+                                                class="small text-secondary"
+                                            >
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- SIZE ERROR -->
+
+                                <div
+                                    id="videoSizeError"
+                                    class="alert alert-danger rounded-4 mt-4"
+                                    style="display:none;"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-circle-exclamation me-2"
+                                    ></i>
+
+                                    Video is too large.
+                                    Maximum allowed size is 100 MB.
+
+                                </div>
+
+
+                                <!-- PROCESSING -->
+
+                                <div
+                                    id="videoProcessingMessage"
+                                    class="alert alert-warning rounded-4 mt-4"
+                                    style="display:none;"
+                                >
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span
+                                            class="spinner-border spinner-border-sm me-2"
+                                        ></span>
+
+                                        <span>
+
+                                            AI is analyzing your video.
+                                            Please wait...
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- BUTTON -->
+
+                                <div class="text-center mt-4">
+
+                                    <button
+                                        type="submit"
+                                        id="startVideoDetectionButton"
+                                        class="btn btn-register px-5 py-3"
+                                    >
+
+                                        <i class="fa-solid fa-microchip me-2"></i>
+
+                                        Start AI Detection
+
+                                    </button>
+
+                                </div>
+
+
+                                <p class="small text-secondary mt-3 mb-0">
+
+                                    <i class="fa-solid fa-shield-halved me-1"></i>
+
+                                    Your video will be processed by the
+                                    SmartAgriVision AI system.
+
+                                </p>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- RESULT SECTION -->
+<!-- ========================================================= -->
+
+{% if uploaded_video_url or video_result or error %}
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- ================================================= -->
+            <!-- VIDEO RESULT -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-lg rounded-4 h-100 overflow-hidden">
+
+                    <div class="card-header bg-dark text-white py-3">
+
+                        <h4 class="fw-bold mb-0">
+
+                            <i class="fa-solid fa-film me-2"></i>
+
+                            Uploaded Video
+
+                        </h4>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+
+                        {% if uploaded_video_url %}
+
+                            <div class="video-preview-wrapper">
+
+                                <video
+                                    controls
+                                    playsinline
+                                    class="uploaded-video"
+                                >
+
+                                    <source
+                                        src="{{ uploaded_video_url }}"
+                                    >
+
+                                    Your browser does not support
+                                    HTML5 video.
+
+                                </video>
+
+                            </div>
+
+
+                            <!-- VIDEO URL -->
+
+                            <div class="text-center mt-4">
+
+                                <a
+                                    href="{{ uploaded_video_url }}"
+                                    target="_blank"
+                                    class="btn btn-outline-primary px-4"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-eye me-2"
+                                    ></i>
+
+                                    Open Video
+
+                                </a>
+
+                            </div>
+
+
+                        {% else %}
+
+                            <div class="empty-video">
+
+                                <i
+                                    class="fa-solid fa-video-slash"
+                                ></i>
+
+                                <h5 class="fw-bold mt-3">
+
+                                    No Video Uploaded
+
+                                </h5>
+
+                                <p class="text-secondary mb-0">
+
+                                    Upload a video above to
+                                    see it here.
+
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- AI RESULT -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-lg rounded-4 h-100 overflow-hidden">
+
+                    <div class="card-header bg-success text-white py-3">
+
+                        <h4 class="fw-bold mb-0">
+
+                            <i class="fa-solid fa-microchip me-2"></i>
+
+                            AI Prediction Result
+
+                        </h4>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+
+                        {% if video_result %}
+
+
+                            <!-- ================================================= -->
+                            <!-- CONFIDENCE BADGE -->
+                            <!-- ================================================= -->
+
+                            <div class="mb-4">
+
+                                {% if video_result.status == "high_confidence" %}
+
+                                    <span
+                                        class="badge bg-success px-3 py-2 fs-6"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-circle-check me-1"
+                                        ></i>
+
+                                        High Confidence Prediction
+
+                                    </span>
+
+                                {% elif video_result.status == "medium_confidence" %}
+
+                                    <span
+                                        class="badge bg-warning text-dark px-3 py-2 fs-6"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-circle-exclamation me-1"
+                                        ></i>
+
+                                        Medium Confidence Prediction
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span
+                                        class="badge bg-danger px-3 py-2 fs-6"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-triangle-exclamation me-1"
+                                        ></i>
+
+                                        Low Confidence Prediction
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- MAIN PREDICTION -->
+                            <!-- ================================================= -->
+
+                            <div class="prediction-highlight">
+
+                                <div class="small text-secondary mb-2">
+
+                                    PREDICTED CLASS
+
+                                </div>
+
+                                <h2 class="fw-bold text-success mb-0">
+
+                                    {{ video_result.prediction }}
+
+                                </h2>
+
+                            </div>
+
+
+
+                            <!-- ================================================= -->
+                            <!-- RESULT TABLE -->
+                            <!-- ================================================= -->
+
+                            <div class="table-responsive mt-4">
+
+                                <table
+                                    class="table table-borderless align-middle"
+                                >
+
+                                    <tbody>
+
+                                        <!-- CLASS -->
+
+                                        <tr>
+
+                                            <th width="45%">
+
+                                                Predicted Class
+
+                                            </th>
+
+                                            <td class="fw-bold text-success">
+
+                                                {{ video_result.prediction }}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- CONFIDENCE -->
+
+                                        <tr>
+
+                                            <th>
+
+                                                Confidence
+
+                                            </th>
+
+                                            <td class="fw-bold">
+
+                                                {{ video_result.confidence|floatformat:2 }}%
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- MODEL -->
+
+                                        <tr>
+
+                                            <th>
+
+                                                AI Model
+
+                                            </th>
+
+                                            <td>
+
+                                                {{ video_result.model }}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- STATUS -->
+
+                                        <tr>
+
+                                            <th>
+
+                                                Status
+
+                                            </th>
+
+                                            <td>
+
+                                                {% if video_result.status == "high_confidence" %}
+
+                                                    <strong class="text-success">
+
+                                                        High Confidence
+
+                                                    </strong>
+
+                                                {% elif video_result.status == "medium_confidence" %}
+
+                                                    <strong class="text-warning">
+
+                                                        Medium Confidence
+
+                                                    </strong>
+
+                                                {% else %}
+
+                                                    <strong class="text-danger">
+
+                                                        Low Confidence
+
+                                                    </strong>
+
+                                                {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- FRAMES -->
+
+                                        <tr>
+
+                                            <th>
+
+                                                Frames Analyzed
+
+                                            </th>
+
+                                            <td class="fw-bold">
+
+                                                {{ video_result.frames_analyzed }}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- PROCESSING TIME -->
+
+                                        <tr>
+
+                                            <th>
+
+                                                Processing Time
+
+                                            </th>
+
+                                            <td>
+
+                                                {{ video_result.processing_time }}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- DATE -->
+
+                                        <tr>
+
+                                            <th>
+
+                                                Detection Date
+
+                                            </th>
+
+                                            <td>
+
+                                                {{ video_result.detection_date }}
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- ================================================= -->
+                            <!-- AI ANALYSIS -->
+                            <!-- ================================================= -->
+
+                            <h6 class="fw-bold mb-3">
+
+                                <i
+                                    class="fa-solid fa-chart-line text-success me-2"
+                                ></i>
+
+                                AI Analysis
+
+                            </h6>
+
+
+                            <p class="text-secondary">
+
+                                The YOLO classification model analyzed the
+                                uploaded plant video and selected the class
+                                with the highest confidence.
+
+                            </p>
+
+
+                            <!-- ================================================= -->
+                            <!-- LOW CONFIDENCE WARNING -->
+                            <!-- ================================================= -->
+
+                            {% if video_result.confidence < 70 %}
+
+                                <div class="alert alert-warning rounded-4">
+
+                                    <i
+                                        class="fa-solid fa-triangle-exclamation me-2"
+                                    ></i>
+
+                                    The prediction confidence is relatively
+                                    low. Consider uploading a clearer video
+                                    with better lighting and a more visible
+                                    plant.
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- ================================================= -->
+                            <!-- CONFIDENCE -->
+                            <!-- ================================================= -->
+
+                            <h6 class="fw-bold mt-4 mb-2">
+
+                                Confidence Level
+
+                            </h6>
+
+
+                            <div
+                                class="progress rounded-pill"
+                                style="height:16px;"
+                            >
+
+                                <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    style="width:{{ video_result.confidence }}%;"
+                                    aria-valuenow="{{ video_result.confidence }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="text-end mt-2">
+
+                                <strong class="text-success">
+
+                                    {{ video_result.confidence|floatformat:2 }}%
+
+                                </strong>
+
+                            </div>
+
+
+                        {% elif error %}
+
+
+                            <!-- ================================================= -->
+                            <!-- ERROR -->
+                            <!-- ================================================= -->
+
+                            <div class="text-center py-5">
+
+                                <i
+                                    class="fa-solid fa-triangle-exclamation
+                                           fa-4x text-danger mb-3"
+                                ></i>
+
+
+                                <h5 class="fw-bold">
+
+                                    Video Analysis Failed
+
+                                </h5>
+
+
+                                <p class="text-danger">
+
+                                    {{ error }}
+
+                                </p>
+
+
+                                <p class="small text-secondary mb-0">
+
+                                    Please try another video with
+                                    better quality.
+
+                                </p>
+
+                            </div>
+
+
+                        {% else %}
+
+
+                            <!-- ================================================= -->
+                            <!-- NO RESULT -->
+                            <!-- ================================================= -->
+
+                            <div class="text-center py-5">
+
+                                <i
+                                    class="fa-solid fa-magnifying-glass-chart
+                                           fa-4x text-secondary mb-4"
+                                ></i>
+
+
+                                <h5 class="fw-bold">
+
+                                    AI Detection Not Started
+
+                                </h5>
+
+
+                                <p class="text-secondary">
+
+                                    Upload a plant video and click
+                                    <strong>
+                                        Start AI Detection
+                                    </strong>
+                                    to generate the AI prediction.
+
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- ========================================================= -->
+<!-- VIDEO INFORMATION -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="card border-0 shadow-lg rounded-4">
+
+            <div class="card-body p-4">
+
+                <div class="row g-4 text-center">
+
+
+                    <!-- FORMATS -->
+
+                    <div class="col-md-4">
+
+                        <i
+                            class="fa-solid fa-file-video
+                                   fa-2x text-danger mb-3"
+                        ></i>
+
+                        <h5 class="fw-bold">
+
+                            Supported Formats
+
+                        </h5>
+
+                        <p class="text-secondary mb-0">
+
+                            MP4, AVI, MOV, MKV, WEBM
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- SIZE -->
+
+                    <div class="col-md-4">
+
+                        <i
+                            class="fa-solid fa-hard-drive
+                                   fa-2x text-warning mb-3"
+                        ></i>
+
+                        <h5 class="fw-bold">
+
+                            Maximum Size
+
+                        </h5>
+
+                        <p class="text-secondary mb-0">
+
+                            100 MB
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- MODEL -->
+
+                    <div class="col-md-4">
+
+                        <i
+                            class="fa-solid fa-microchip
+                                   fa-2x text-success mb-3"
+                        ></i>
+
+                        <h5 class="fw-bold">
+
+                            AI Classification
+
+                        </h5>
+
+                        <p class="text-secondary mb-0">
+
+                            YOLO11 Classification
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================================= -->
+<!-- TIPS -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="card border-0 bg-success text-white
+                   shadow-lg rounded-4"
+        >
+
+            <div class="card-body p-5">
+
+                <div class="row align-items-center">
+
+
+                    <div class="col-lg-8">
+
+                        <h3 class="fw-bold mb-4">
+
+                            <i
+                                class="fa-solid fa-lightbulb me-2"
+                            ></i>
+
+                            Best Video Capture Tips
+
+                        </h3>
+
+
+                        <ul class="mb-0">
+
+                            <li class="mb-2">
+
+                                Use good natural lighting.
+
+                            </li>
+
+
+                            <li class="mb-2">
+
+                                Keep the plant clearly visible.
+
+                            </li>
+
+
+                            <li class="mb-2">
+
+                                Keep the camera steady.
+
+                            </li>
+
+
+                            <li class="mb-2">
+
+                                Avoid blurry footage.
+
+                            </li>
+
+
+                            <li>
+
+                                Make sure the affected area
+                                is visible.
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div class="col-lg-4 text-center mt-4 mt-lg-0">
+
+                        <i
+                            class="fa-solid fa-video
+                                   fa-6x opacity-75"
+                        ></i>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================================= -->
+<!-- AI NOTICE -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="alert alert-warning border-0
+                   shadow-sm rounded-4 p-4"
+        >
+
+            <div class="d-flex align-items-start">
+
+                <i
+                    class="fa-solid fa-triangle-exclamation
+                           fa-2x me-3 mt-1"
+                ></i>
+
+
+                <div>
+
+                    <h5 class="fw-bold">
+
+                        Important AI Prediction Notice
+
+                    </h5>
+
+
+                    <p class="mb-0">
+
+                        AI predictions are intended to assist with
+                        preliminary crop health assessment.
+                        A low-confidence prediction should not be
+                        treated as a confirmed diagnosis.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ========================================================= -->
+<!-- CSS -->
+<!-- ========================================================= -->
+
+<style>
+
+    /* ========================================================= */
+    /* UPLOAD BOX */
+    /* ========================================================= */
+
+    .video-upload-box {
+
+        border: 2px dashed #dc3545;
+
+        border-radius: 22px;
+
+        padding: 45px 30px;
+
+        text-align: center;
+
+        background: rgba(220, 53, 69, 0.025);
+
+        transition: 0.3s ease;
+
+    }
+
+
+    .video-upload-box:hover {
+
+        border-color: #bb2d3b;
+
+        background: rgba(220, 53, 69, 0.05);
+
+    }
+
+
+    /* ========================================================= */
+    /* UPLOAD ICON */
+    /* ========================================================= */
+
+    .video-upload-icon {
+
+        width: 90px;
+
+        height: 90px;
+
+        margin: 0 auto 25px;
+
+        border-radius: 50%;
+
+        background: rgba(220, 53, 69, 0.1);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+    }
+
+
+    .video-upload-icon i {
+
+        font-size: 42px;
+
+        color: #dc3545;
+
+    }
+
+
+    /* ========================================================= */
+    /* SELECTED VIDEO */
+    /* ========================================================= */
+
+    .selected-video-info {
+
+        background: #f8f9fa;
+
+        border: 1px solid #dee2e6;
+
+        border-radius: 16px;
+
+        padding: 18px;
+
+    }
+
+
+    .file-icon {
+
+        width: 50px;
+
+        height: 50px;
+
+        border-radius: 12px;
+
+        background: rgba(220, 53, 69, 0.1);
+
+        color: #dc3545;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        margin-right: 15px;
+
+        font-size: 22px;
+
+    }
+
+
+    /* ========================================================= */
+    /* VIDEO PREVIEW */
+    /* ========================================================= */
+
+    .video-preview-wrapper {
+
+        width: 100%;
+
+        background: #111;
+
+        border-radius: 18px;
+
+        overflow: hidden;
+
+    }
+
+
+    .uploaded-video {
+
+        display: block;
+
+        width: 100%;
+
+        max-height: 430px;
+
+        object-fit: contain;
+
+        background: #111;
+
+    }
+
+
+    /* ========================================================= */
+    /* EMPTY VIDEO */
+    /* ========================================================= */
+
+    .empty-video {
+
+        min-height: 350px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        align-items: center;
+
+        text-align: center;
+
+        background: #f8f9fa;
+
+        border-radius: 18px;
+
+        padding: 40px;
+
+    }
+
+
+    .empty-video i {
+
+        font-size: 65px;
+
+        color: #adb5bd;
+
+    }
+
+
+    /* ========================================================= */
+    /* PREDICTION HIGHLIGHT */
+    /* ========================================================= */
+
+    .prediction-highlight {
+
+        background: rgba(25, 135, 84, 0.08);
+
+        border: 1px solid rgba(25, 135, 84, 0.15);
+
+        border-radius: 18px;
+
+        padding: 22px;
+
+    }
+
+
+    .prediction-highlight h2 {
+
+        word-break: break-word;
+
+    }
+
+
+    /* ========================================================= */
+    /* PROGRESS */
+    /* ========================================================= */
+
+    .progress {
+
+        background-color: #e9ecef;
+
+        overflow: hidden;
+
+    }
+
+
+    .progress-bar {
+
+        transition: width 0.8s ease;
+
+    }
+
+
+    /* ========================================================= */
+    /* MOBILE */
+    /* ========================================================= */
+
+    @media (max-width: 768px) {
+
+        .video-upload-box {
+
+            padding: 35px 20px;
+
+        }
+
+
+        .prediction-highlight h2 {
+
+            font-size: 1.6rem;
+
+        }
+
+
+        .uploaded-video {
+
+            max-height: 350px;
+
+        }
+
+    }
+
+
+    @media (max-width: 576px) {
+
+        .video-upload-box {
+
+            padding: 30px 15px;
+
+        }
+
+
+        .video-upload-icon {
+
+            width: 75px;
+
+            height: 75px;
+
+        }
+
+
+        .video-upload-icon i {
+
+            font-size: 34px;
+
+        }
+
+
+        .uploaded-video {
+
+            max-height: 280px;
+
+        }
+
+    }
+
+</style>
+
+
+
+<!-- ========================================================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input =
+        document.getElementById("videoInput");
+
+    const info =
+        document.getElementById("selectedVideoInfo");
+
+    const nameBox =
+        document.getElementById("selectedVideoName");
+
+    const sizeBox =
+        document.getElementById("selectedVideoSize");
+
+    const sizeError =
+        document.getElementById("videoSizeError");
+
+    const form =
+        document.getElementById("videoDetectionForm");
+
+    const processing =
+        document.getElementById("videoProcessingMessage");
+
+    const button =
+        document.getElementById(
+            "startVideoDetectionButton"
+        );
+
+
+    const MAX_SIZE =
+        100 * 1024 * 1024;
+
+
+    /* ========================================================= */
+    /* FILE CHANGE */
+    /* ========================================================= */
+
+    if (input) {
+
+        input.addEventListener(
+            "change",
+            function () {
+
+                sizeError.style.display = "none";
+
+                info.style.display = "none";
+
+
+                if (
+                    !input.files ||
+                    input.files.length === 0
+                ) {
+
+                    return;
+
+                }
+
+
+                const file =
+                    input.files[0];
+
+
+                /* SIZE */
+
+                if (file.size > MAX_SIZE) {
+
+                    sizeError.style.display =
+                        "block";
+
+                    input.value = "";
+
+                    return;
+
+                }
+
+
+                /* INFORMATION */
+
+                const sizeMB =
+                    (
+                        file.size /
+                        (1024 * 1024)
+                    ).toFixed(2);
+
+
+                nameBox.textContent =
+                    file.name;
+
+
+                sizeBox.textContent =
+                    "Size: " + sizeMB + " MB";
+
+
+                info.style.display =
+                    "block";
+
+            }
+        );
+
+    }
+
+
+    /* ========================================================= */
+    /* FORM SUBMIT */
+    /* ========================================================= */
+
+    if (form) {
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                if (
+                    !input.files ||
+                    input.files.length === 0
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a video first."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    input.files[0].size >
+                    MAX_SIZE
+                ) {
+
+                    event.preventDefault();
+
+                    sizeError.style.display =
+                        "block";
+
+                    return;
+
+                }
+
+
+                /* SHOW PROCESSING */
+
+                processing.style.display =
+                    "block";
+
+
+                /* DISABLE BUTTON */
+
+                button.disabled =
+                    true;
+
+
+                button.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-2"></span>' +
+                    'Analyzing Video...';
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+
+{% endblock %}

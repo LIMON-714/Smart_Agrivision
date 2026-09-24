@@ -1,0 +1,344 @@
+    {% extends 'base.html' %}
+    {% load static %}
+
+    {% block title %}
+    Contact Us | InnoCLave AgriVision
+    {% endblock %}
+
+    {% block content %}
+
+    <!-- ================================= -->
+    <!-- Contact Banner -->
+    <!-- ================================= -->
+
+    <section class="page-banner py-4 text-center">
+
+        <div class="container">
+
+            <span class="badge bg-primary px-3 py-2 mb-3">
+
+                CONTACT US
+
+            </span>
+
+            <h1 class="fw-bold mb-2">
+
+                Get In Touch
+
+            </h1>
+
+            <p class="text-secondary mb-0">
+
+                We'd love to hear from you. Send us a message anytime.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ================================= -->
+    <!-- Contact Section -->
+    <!-- ================================= -->
+
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="row g-3 align-items-stretch">
+
+                <!-- Google Map -->
+
+                <div class="col-lg-5">
+
+                    <div class="card bg-dark border-0 shadow-lg rounded-4 overflow-hidden h-100">
+
+                        <div class="card-header bg-transparent border-bottom border-secondary py-2 px-3">
+
+                            <h6 class="text-white fw-semibold mb-0">
+
+                                <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+
+                                Our Location
+
+                            </h6>
+
+                        </div>
+
+                        <iframe
+                            src="https://www.google.com/maps?q=Dhaka,Bangladesh&output=embed"
+                            width="100%"
+                            style="border:0;height:480px;"
+                            loading="lazy"
+                            allowfullscreen>
+                        </iframe>
+
+                    </div>
+
+                </div>
+
+                <!-- Contact Form -->
+
+                <div class="col-lg-7">
+
+                    <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                        <div class="card-body p-3">
+
+                            <h4 class="fw-bold text-white mb-1">
+
+                                Send Message
+
+                            </h4>
+
+                            <p class="text-light opacity-75 small mb-3">
+
+                                Fill out the form and we'll get back to you shortly.
+
+                            </p>
+
+                            <form method="POST">
+
+                                {% csrf_token %}
+
+                                <div class="row">
+
+                                    <div class="col-md-6 mb-2">
+
+                                        <label class="form-label text-light small mb-1">
+
+                                            Full Name
+
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control bg-dark text-white border-secondary"
+                                            placeholder="Your full name">
+
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+
+                                        <label class="form-label text-light small mb-1">
+
+                                            Email Address
+
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            class="form-control bg-dark text-white border-secondary"
+                                            placeholder="example@email.com">
+
+                                    </div>
+
+                                    <div class="col-12 mb-2">
+
+                                        <label class="form-label text-light small mb-1">
+
+                                            Subject
+
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control bg-dark text-white border-secondary"
+                                            placeholder="Subject">
+
+                                    </div>
+
+                                    <div class="col-12 mb-3">
+
+                                        <label class="form-label text-light small mb-1">
+
+                                            Message
+
+                                        </label>
+
+                                        <textarea
+                                            class="form-control bg-dark text-white border-secondary"
+                                            rows="4"
+                                            placeholder="Write your message here..."></textarea>
+
+                                    </div>
+
+                                    <div class="col-12">
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-register px-4 py-2">
+
+                                            <i class="fa-solid fa-paper-plane me-2"></i>
+
+                                            Send Message
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================================= -->
+    <!-- Contact Information -->
+    <!-- ================================= -->
+
+    <section class="pb-5">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <!-- Address -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                        <div class="card-body text-center py-4">
+
+                            <div class="mb-3">
+
+                                <i class="fa-solid fa-location-dot fa-2x text-primary"></i>
+
+                            </div>
+
+                            <h6 class="fw-bold text-white mb-2">
+
+                                Address
+
+                            </h6>
+
+                            <p class="text-light opacity-75 small mb-0">
+
+                                Dhaka<br>
+
+                                Bangladesh
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Phone -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                        <div class="card-body text-center py-4">
+
+                            <div class="mb-3">
+
+                                <i class="fa-solid fa-phone fa-2x text-primary"></i>
+
+                            </div>
+
+                            <h6 class="fw-bold text-white mb-2">
+
+                                Phone
+
+                            </h6>
+
+                            <p class="text-light opacity-75 small mb-0">
+
+                                +880 1XXX-XXXXXX
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Email -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                        <div class="card-body text-center py-4">
+
+                            <div class="mb-3">
+
+                                <i class="fa-solid fa-envelope fa-2x text-primary"></i>
+
+                            </div>
+
+                            <h6 class="fw-bold text-white mb-2">
+
+                                Email
+
+                            </h6>
+
+                            <p class="text-light opacity-75 small mb-0">
+
+                                info@innoclaveagrivision.com
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Office Hours -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="card bg-dark border-0 shadow-lg rounded-4 h-100">
+
+                        <div class="card-body text-center py-4">
+
+                            <div class="mb-3">
+
+                                <i class="fa-solid fa-clock fa-2x text-primary"></i>
+
+                            </div>
+
+                            <h6 class="fw-bold text-white mb-2">
+
+                                Office Hours
+
+                            </h6>
+
+                            <p class="text-light opacity-75 small mb-0">
+
+                                Mon - Sat<br>
+
+                                09:00 AM - 06:00 PM
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endblock %}

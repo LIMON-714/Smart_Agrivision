@@ -1,0 +1,1482 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Image Detection | InnoCLave AgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ================================= -->
+<!-- Image Detection Banner -->
+<!-- ================================= -->
+
+<section class="page-banner py-5">
+
+    <div class="container text-center">
+
+        <span class="badge bg-success px-3 py-2 mb-3">
+            AI IMAGE DETECTION
+        </span>
+
+        <h1 class="fw-bold display-5 mb-3">
+            Plant Disease Image Detection
+        </h1>
+
+        <p class="lead text-secondary mx-auto" style="max-width:700px;">
+
+                Upload an image of your vegetable or plant leaf and let our AI 
+                detect diseases with high accuracy in just a few seconds.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================================= -->
+<!-- Upload Section -->
+<!-- ================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10">
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+
+                    <!-- Card Header -->
+
+                    <div class="card-header bg-dark text-white py-3">
+
+                        <h4 class="mb-0 fw-bold">
+
+                            <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+
+                            Upload Plant Image
+
+                        </h4>
+
+                    </div>
+
+
+                    <!-- Card Body -->
+
+                    <div class="card-body p-5">
+
+                        <form
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="imageDetectionForm">
+
+                            {% csrf_token %}
+
+
+                            <div
+                                class="upload-area border border-2 border-success rounded-4 text-center p-5">
+
+
+                                <!-- Upload Icon -->
+
+                                <div class="mb-4">
+
+                                    <i
+                                        class="fa-solid fa-image fa-5x text-success">
+                                    </i>
+
+                                </div>
+
+
+                                <!-- Upload Heading -->
+
+                                <h3 class="fw-bold mb-3">
+
+                                    Drag & Drop Your Image
+
+                                </h3>
+
+
+                                <!-- Supported Formats -->
+
+                                <p class="text-secondary mb-4">
+
+                                    Supported Formats:
+                                    JPG, JPEG, PNG, BMP, WEBP
+
+                                    <br>
+
+                                    Maximum Size:
+                                    10 MB
+
+                                </p>
+
+
+                                <!-- Image Input -->
+
+                                <input
+                                    type="file"
+                                    class="form-control mb-4"
+                                    accept=".jpg,.jpeg,.png,.bmp,.webp"
+                                    name="image"
+                                    id="imageInput"
+                                    required>
+
+
+                                <!-- Selected File Information -->
+
+                                <div
+                                    id="selectedFileInfo"
+                                    class="text-secondary small mb-4"
+                                    style="display:none;">
+
+                                    <i
+                                        class="fa-solid fa-file-image me-2">
+                                    </i>
+
+                                    <span id="selectedFileName"></span>
+
+                                </div>
+
+
+                                <!-- Detect Button -->
+
+                                <button
+                                    type="submit"
+                                    id="detectButton"
+                                    class="btn btn-register px-5 py-3">
+
+                                    <i
+                                        class="fa-solid fa-magnifying-glass me-2">
+                                    </i>
+
+                                    Detect Disease
+
+                                </button>
+
+
+                                <!-- Processing Message -->
+
+                                <div
+                                    id="processingMessage"
+                                    class="text-success fw-semibold mt-4"
+                                    style="display:none;">
+
+                                    <span
+                                        class="spinner-border spinner-border-sm me-2"
+                                        role="status"
+                                        aria-hidden="true">
+                                    </span>
+
+                                    AI is analyzing your image.
+                                    Please wait...
+
+                                </div>
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ================================= -->
+<!-- Preview & AI Result -->
+<!-- ================================= -->
+
+{% if detection %}
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- ========================= -->
+            <!-- Uploaded Image -->
+            <!-- ========================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-header bg-dark text-white py-3">
+
+                        <h5 class="mb-0 fw-bold">
+
+                            <i class="fa-solid fa-image me-2"></i>
+
+                            Uploaded Image
+
+                        </h5>
+
+                    </div>
+
+
+                    <div class="card-body text-center">
+
+                        {% if detection.image %}
+
+                            <img
+                                src="{{ detection.image.url }}"
+                                class="img-fluid rounded-4 shadow-sm"
+                                alt="Uploaded Plant Image">
+
+                            <div class="mt-4">
+
+                                <a
+                                    href="{{ detection.image.url }}"
+                                    download
+                                    class="btn btn-outline-success me-2">
+
+                                    <i class="fa-solid fa-download me-2"></i>
+
+                                    Download Image
+
+                                </a>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="py-5 text-secondary">
+
+                                <i
+                                    class="fa-solid fa-image fa-4x mb-3">
+                                </i>
+
+                                <p class="mb-0">
+                                    Uploaded image is not available.
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- AI Prediction -->
+            <!-- ========================= -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-header bg-success text-white py-3">
+
+                        <h5 class="mb-0 fw-bold">
+
+                            <i class="fa-solid fa-microchip me-2"></i>
+
+                            AI Prediction Result
+
+                        </h5>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+
+                        <!-- Prediction Status -->
+
+                        <div class="mb-4">
+
+                            {% if detection.confidence >= 80 %}
+
+                                <span class="badge bg-success px-3 py-2 fs-6">
+
+                                    <i
+                                        class="fa-solid fa-circle-check me-1">
+                                    </i>
+
+                                    High Confidence Prediction
+
+                                </span>
+
+                            {% elif detection.confidence >= 50 %}
+
+                                <span
+                                    class="badge bg-warning text-dark px-3 py-2 fs-6">
+
+                                    <i
+                                        class="fa-solid fa-triangle-exclamation me-1">
+                                    </i>
+
+                                    Moderate Confidence
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger px-3 py-2 fs-6">
+
+                                    <i
+                                        class="fa-solid fa-circle-exclamation me-1">
+                                    </i>
+
+                                    Low Confidence Prediction
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Prediction Details -->
+
+                        <table class="table table-borderless align-middle">
+
+
+                            <tr>
+
+                                <th width="40%">
+                                    Predicted Class
+                                </th>
+
+                                <td class="fw-bold text-success">
+
+                                    {{ detection.predicted_class|default:"Unknown" }}
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>
+                                    Confidence
+                                </th>
+
+                                <td>
+
+                                    {{ detection.confidence|floatformat:2 }}%
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>
+                                    AI Model
+                                </th>
+
+                                <td>
+
+                                    {{ detection.model_name|default:"YOLO" }}
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <td>
+
+                                    {% if detection.confidence >= 80 %}
+
+                                        <span class="badge bg-success">
+                                            High Confidence
+                                        </span>
+
+                                    {% elif detection.confidence >= 50 %}
+
+                                        <span
+                                            class="badge bg-warning text-dark">
+                                            Needs Review
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+                                            Low Confidence
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <th>
+                                    Detection Date
+                                </th>
+
+                                <td>
+
+                                    {{ detection.created_at|date:"d M Y, h:i A" }}
+
+                                </td>
+
+                            </tr>
+
+
+                        </table>
+
+
+                        <hr>
+
+
+                        <!-- AI Recommendation -->
+
+                        <h6 class="fw-bold">
+
+                            <i
+                                class="fa-solid fa-brain me-2 text-success">
+                            </i>
+
+                            AI Analysis
+
+                        </h6>
+
+
+                        <p class="text-secondary mb-4">
+
+                            The AI model analyzed the uploaded plant image
+                            and generated the prediction shown above.
+                            Please review the confidence score before
+                            taking agricultural action.
+
+                        </p>
+
+
+                        <!-- Result Information -->
+
+                        <div class="alert alert-light border rounded-3 mb-0">
+
+                            <i
+                                class="fa-solid fa-circle-info text-success me-2">
+                            </i>
+
+                            Prediction results are generated by the
+                            trained SmartAgriVision AI model.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
+<!-- ================================= -->
+<!-- Detection Statistics -->
+<!-- ================================= -->
+
+{% if detection %}
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- ========================= -->
+            <!-- Detection Time -->
+            <!-- ========================= -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div
+                    class="card border-0 shadow rounded-4 text-center h-100">
+
+                    <div class="card-body py-4">
+
+                        <i
+                            class="fa-solid fa-stopwatch fa-2x text-success mb-3">
+                        </i>
+
+                        <h3 class="fw-bold">
+
+                            {% if detection.processing_time %}
+                                {{ detection.processing_time|floatformat:2 }}s
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+
+                            Detection Time
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- Confidence -->
+            <!-- ========================= -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div
+                    class="card border-0 shadow rounded-4 text-center h-100">
+
+                    <div class="card-body py-4">
+
+                        <i
+                            class="fa-solid fa-chart-line fa-2x text-primary mb-3">
+                        </i>
+
+                        <h3 class="fw-bold">
+
+                            {{ detection.confidence|floatformat:2 }}%
+
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+
+                            Confidence
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- AI Model -->
+            <!-- ========================= -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div
+                    class="card border-0 shadow rounded-4 text-center h-100">
+
+                    <div class="card-body py-4">
+
+                        <i
+                            class="fa-solid fa-microchip fa-2x text-warning mb-3">
+                        </i>
+
+                        <h3 class="fw-bold">
+
+                            {{ detection.model_name|default:"YOLO" }}
+
+                        </h3>
+
+                        <p class="text-secondary mb-0">
+
+                            AI Model
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- Model Status -->
+            <!-- ========================= -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div
+                    class="card border-0 shadow rounded-4 text-center h-100">
+
+                    <div class="card-body py-4">
+
+                        {% if detection.confidence >= 80 %}
+
+                            <i
+                                class="fa-solid fa-shield-heart fa-2x text-success mb-3">
+                            </i>
+
+                            <h3 class="fw-bold text-success">
+
+                                High
+
+                            </h3>
+
+                        {% elif detection.confidence >= 50 %}
+
+                            <i
+                                class="fa-solid fa-shield-heart fa-2x text-warning mb-3">
+                            </i>
+
+                            <h3 class="fw-bold text-warning">
+
+                                Medium
+
+                            </h3>
+
+                        {% else %}
+
+                            <i
+                                class="fa-solid fa-shield-heart fa-2x text-danger mb-3">
+                            </i>
+
+                            <h3 class="fw-bold text-danger">
+
+                                Low
+
+                            </h3>
+
+                        {% endif %}
+
+                        <p class="text-secondary mb-0">
+
+                            Prediction Reliability
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================= -->
+<!-- AI Analysis Details -->
+<!-- ================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="card border-0 shadow-lg rounded-4">
+
+
+            <!-- Header -->
+
+            <div
+                class="card-header bg-dark text-white py-3">
+
+                <h4 class="mb-0 fw-bold">
+
+                    <i
+                        class="fa-solid fa-brain me-2">
+                    </i>
+
+                    AI Analysis Details
+
+                </h4>
+
+            </div>
+
+
+            <!-- Body -->
+
+            <div class="card-body p-4">
+
+                <div class="row g-4">
+
+
+                    <!-- ========================= -->
+                    <!-- Prediction Information -->
+                    <!-- ========================= -->
+
+                    <div class="col-lg-6">
+
+                        <table
+                            class="table table-striped align-middle">
+
+                            <tbody>
+
+
+                                <tr>
+
+                                    <th width="40%">
+
+                                        Prediction ID
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.id %}
+
+                                            #{{ detection.id }}
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        Predicted Class
+
+                                    </th>
+
+                                    <td class="fw-semibold">
+
+                                        {{ detection.predicted_class|default:"Unknown" }}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        Confidence
+
+                                    </th>
+
+                                    <td>
+
+                                        {{ detection.confidence|floatformat:2 }}%
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        AI Model
+
+                                    </th>
+
+                                    <td>
+
+                                        {{ detection.model_name|default:"YOLO" }}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        Detection Status
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.confidence >= 80 %}
+
+                                            <span
+                                                class="badge bg-success">
+
+                                                High Confidence
+
+                                            </span>
+
+                                        {% elif detection.confidence >= 50 %}
+
+                                            <span
+                                                class="badge bg-warning text-dark">
+
+                                                Needs Review
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span
+                                                class="badge bg-danger">
+
+                                                Low Confidence
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- File Information -->
+                    <!-- ========================= -->
+
+                    <div class="col-lg-6">
+
+                        <table
+                            class="table table-striped align-middle">
+
+                            <tbody>
+
+
+                                <tr>
+
+                                    <th width="40%">
+
+                                        File Name
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.image %}
+
+                                            {{ detection.image.name|cut:"uploads/" }}
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        File Type
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.image %}
+
+                                            {{ detection.image.name|slice:"-4:"|upper }}
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        Processing Time
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.processing_time %}
+
+                                            {{ detection.processing_time|floatformat:2 }}
+                                            Seconds
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        Detection Date
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.created_at %}
+
+                                            {{ detection.created_at|date:"d M Y" }}
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th>
+
+                                        Detection Time
+
+                                    </th>
+
+                                    <td>
+
+                                        {% if detection.created_at %}
+
+                                            {{ detection.created_at|date:"h:i A" }}
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- ================================= -->
+<!-- Detection Information Notice -->
+<!-- ================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="alert alert-success border-0 shadow-sm rounded-4 p-4 mb-0">
+
+
+            <div class="d-flex align-items-start">
+
+
+                <i
+                    class="fa-solid fa-circle-info fa-lg me-3 mt-1">
+                </i>
+
+
+                <div>
+
+                    <h6 class="fw-bold mb-2">
+
+                        About Your AI Results
+
+                    </h6>
+
+                    <p class="mb-0 text-secondary">
+
+                        Detection results shown above are generated from
+                        your uploaded images and stored in your detection
+                        history. Confidence indicates how strongly the AI
+                        model supports its prediction.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ================================= -->
+<!-- Best Results Tips -->
+<!-- ================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="card border-0 bg-success text-white rounded-4 shadow-lg">
+
+            <div class="card-body p-5">
+
+                <div class="row align-items-center">
+
+
+                    <!-- Tips -->
+
+                    <div class="col-lg-8">
+
+                        <h3 class="fw-bold mb-3">
+
+                            <i
+                                class="fa-solid fa-lightbulb me-2">
+                            </i>
+
+                            Best Results Tips
+
+                        </h3>
+
+
+                        <ul class="mb-0">
+
+                            <li class="mb-2">
+
+                                Capture images in natural daylight.
+
+                            </li>
+
+                            <li class="mb-2">
+
+                                Focus clearly on the plant leaf or vegetable.
+
+                            </li>
+
+                            <li class="mb-2">
+
+                                Avoid blurry or low-resolution images.
+
+                            </li>
+
+                            <li class="mb-2">
+
+                                Keep only one plant in each image.
+
+                            </li>
+
+                            <li>
+
+                                Use JPG, JPEG, PNG, BMP, or WEBP format.
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <!-- Icon -->
+
+                    <div
+                        class="col-lg-4 text-center mt-4 mt-lg-0">
+
+                        <i
+                            class="fa-solid fa-seedling fa-6x opacity-75">
+                        </i>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================= -->
+<!-- Call To Action -->
+<!-- ================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="card border-0 shadow-lg rounded-4">
+
+            <div class="card-body text-center py-5">
+
+
+                <h2 class="fw-bold mb-3">
+
+                    Need Expert Agricultural Advice?
+
+                </h2>
+
+
+                <p
+                    class="text-secondary mb-4 mx-auto"
+                    style="max-width:700px;">
+
+                    Our AI provides fast predictions, but AI results should
+                    be reviewed carefully. For severe or uncertain infections,
+                    consult an agricultural specialist for proper diagnosis
+                    and treatment guidance.
+
+                </p>
+
+
+                <a
+                    href="{% url 'contact' %}"
+                    class="btn btn-register px-5 py-3">
+
+                    <i
+                        class="fa-solid fa-headset me-2">
+                    </i>
+
+                    Contact Our Experts
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================= -->
+<!-- Image Detection JavaScript -->
+<!-- ================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const imageInput =
+        document.getElementById("imageInput");
+
+    const detectionForm =
+        document.getElementById("imageDetectionForm");
+
+    const detectButton =
+        document.getElementById("detectButton");
+
+    const selectedFileInfo =
+        document.getElementById("selectedFileInfo");
+
+    const selectedFileName =
+        document.getElementById("selectedFileName");
+
+    const processingMessage =
+        document.getElementById("processingMessage");
+
+
+    /*
+    ====================================
+    Configuration
+    ====================================
+    */
+
+    const MAX_FILE_SIZE =
+        10 * 1024 * 1024;
+
+    const ALLOWED_EXTENSIONS = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".bmp",
+        ".webp"
+    ];
+
+
+    /*
+    ====================================
+    File Selection
+    ====================================
+    */
+
+    if (imageInput) {
+
+        imageInput.addEventListener(
+            "change",
+            function () {
+
+
+                const file =
+                    this.files[0];
+
+
+                if (!file) {
+
+                    if (selectedFileInfo) {
+                        selectedFileInfo.style.display =
+                            "none";
+                    }
+
+                    return;
+
+                }
+
+
+                /*
+                ----------------------------
+                Check File Extension
+                ----------------------------
+                */
+
+                const fileName =
+                    file.name.toLowerCase();
+
+                const extension =
+                    fileName.substring(
+                        fileName.lastIndexOf(".")
+                    );
+
+
+                if (
+                    !ALLOWED_EXTENSIONS.includes(
+                        extension
+                    )
+                ) {
+
+                    alert(
+                        "Invalid image format. " +
+                        "Please select JPG, JPEG, PNG, BMP, or WEBP."
+                    );
+
+                    this.value = "";
+
+                    if (selectedFileInfo) {
+                        selectedFileInfo.style.display =
+                            "none";
+                    }
+
+                    return;
+
+                }
+
+
+                /*
+                ----------------------------
+                Check File Size
+                ----------------------------
+                */
+
+                if (file.size > MAX_FILE_SIZE) {
+
+                    alert(
+                        "Image size must be 10 MB or smaller."
+                    );
+
+                    this.value = "";
+
+                    if (selectedFileInfo) {
+                        selectedFileInfo.style.display =
+                            "none";
+                    }
+
+                    return;
+
+                }
+
+
+                /*
+                ----------------------------
+                Show Selected File
+                ----------------------------
+                */
+
+                if (selectedFileName) {
+
+                    selectedFileName.textContent =
+                        file.name;
+
+                }
+
+
+                if (selectedFileInfo) {
+
+                    selectedFileInfo.style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+    ====================================
+    Form Submit
+    ====================================
+    */
+
+    if (detectionForm) {
+
+        detectionForm.addEventListener(
+            "submit",
+            function (event) {
+
+
+                if (
+                    !imageInput ||
+                    !imageInput.files ||
+                    imageInput.files.length === 0
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a plant image first."
+                    );
+
+                    return;
+
+                }
+
+
+                const file =
+                    imageInput.files[0];
+
+
+                /*
+                ----------------------------
+                Final File Size Check
+                ----------------------------
+                */
+
+                if (file.size > MAX_FILE_SIZE) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Image size must be 10 MB or smaller."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                ----------------------------
+                Disable Button
+                ----------------------------
+                */
+
+                if (detectButton) {
+
+                    detectButton.disabled =
+                        true;
+
+                    detectButton.innerHTML =
+
+                        '<span class="spinner-border ' +
+                        'spinner-border-sm me-2" ' +
+                        'role="status" ' +
+                        'aria-hidden="true">' +
+                        '</span>' +
+
+                        'Analyzing Image...';
+
+                }
+
+
+                /*
+                ----------------------------
+                Show Processing Message
+                ----------------------------
+                */
+
+                if (processingMessage) {
+
+                    processingMessage.style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+
+{% endblock %}

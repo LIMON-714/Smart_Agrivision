@@ -1,0 +1,1530 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Camera Detection | SmartAgriVision
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================================= -->
+<!-- HEADER -->
+<!-- ========================================================= -->
+
+<section class="page-banner py-5">
+
+    <div class="container text-center">
+
+        <span class="badge bg-success px-3 py-2 mb-3">
+
+            <i class="fa-solid fa-camera me-1"></i>
+
+            AI CAMERA DETECTION
+
+        </span>
+
+        <h1 class="display-5 fw-bold mb-3">
+            Live Plant Detection
+        </h1>
+
+        <p class="lead text-secondary mx-auto"
+           style="max-width:750px;">
+
+            Capture a plant leaf or vegetable with your camera
+            and let SmartAgriVision analyze it using AI.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CAMERA + RESULT -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row g-4 justify-content-center">
+
+
+            <!-- ================================================= -->
+            <!-- CAMERA -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-7">
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                    <div class="card-header bg-dark text-white py-3">
+
+                        <h4 class="fw-bold mb-0">
+
+                            <i class="fa-solid fa-camera me-2"></i>
+
+                            Live Camera
+
+                        </h4>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+
+                        <!-- CAMERA -->
+                        <div class="camera-wrapper">
+
+                            <div
+                                id="cameraContainer"
+                                class="camera-container"
+                            >
+
+                                <video
+                                    id="cameraVideo"
+                                    autoplay
+                                    playsinline
+                                    muted
+                                    class="camera-video"
+                                ></video>
+
+
+                                <canvas
+                                    id="cameraCanvas"
+                                    style="display:none;"
+                                ></canvas>
+
+
+                                <div
+                                    id="cameraPlaceholder"
+                                    class="camera-placeholder"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-camera fa-4x text-success mb-3"
+                                    ></i>
+
+                                    <h4 class="fw-bold">
+                                        Camera is Off
+                                    </h4>
+
+                                    <p class="text-light opacity-75 mb-0">
+
+                                        Click
+                                        <strong>
+                                            Turn On Camera
+                                        </strong>
+                                        to start your camera.
+
+                                    </p>
+
+                                </div>
+
+
+                                <div
+                                    id="cameraLoading"
+                                    class="camera-loading"
+                                    style="display:none;"
+                                >
+
+                                    <div
+                                        class="spinner-border text-success mb-3"
+                                    ></div>
+
+                                    <div>
+                                        Starting camera...
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    id="cameraGuide"
+                                    class="camera-guide"
+                                    style="display:none;"
+                                >
+
+                                    Keep the plant inside the frame
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="text-center mt-3">
+
+                            <span
+                                id="cameraStatus"
+                                class="badge bg-secondary px-3 py-2"
+                            >
+
+                                <i class="fa-solid fa-circle me-1"></i>
+
+                                Camera Off
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- ERROR -->
+
+                        <div
+                            id="cameraError"
+                            class="alert alert-danger rounded-4 mt-3"
+                            style="display:none;"
+                        >
+
+                            <i
+                                class="fa-solid fa-circle-exclamation me-2"
+                            ></i>
+
+                            <span id="cameraErrorText"></span>
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div
+                            class="d-flex flex-wrap justify-content-center gap-2 mt-4"
+                        >
+
+                            <button
+                                type="button"
+                                id="startCameraButton"
+                                class="btn btn-success px-4 py-3"
+                            >
+
+                                <i class="fa-solid fa-video me-2"></i>
+
+                                Turn On Camera
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="captureImageButton"
+                                class="btn btn-primary px-4 py-3"
+                                disabled
+                            >
+
+                                <i class="fa-solid fa-camera me-2"></i>
+
+                                Capture Image
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="stopCameraButton"
+                                class="btn btn-danger px-4 py-3"
+                                disabled
+                            >
+
+                                <i class="fa-solid fa-stop me-2"></i>
+
+                                Stop Camera
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- CAPTURED IMAGE -->
+                        <!-- ================================================= -->
+
+                        <div
+                            id="capturedImageContainer"
+                            class="captured-container mt-4"
+                            style="display:none;"
+                        >
+
+                            <hr>
+
+                            <h5 class="fw-bold text-center mb-3">
+
+                                <i class="fa-solid fa-image me-2"></i>
+
+                                Captured Image
+
+                            </h5>
+
+
+                            <div class="text-center">
+
+                                <img
+                                    id="capturedImage"
+                                    src=""
+                                    alt="Captured plant image"
+                                    class="captured-image"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- FORM -->
+                        <!-- ================================================= -->
+
+                        <form
+                            method="POST"
+                            action=""
+                            enctype="multipart/form-data"
+                            id="cameraDetectionForm"
+                            class="text-center mt-4"
+                        >
+
+                            {% csrf_token %}
+
+
+                            <!--
+                            IMPORTANT:
+                            JavaScript will put the captured image
+                            into this input's .files property.
+                            -->
+
+                            <input
+                                type="file"
+                                name="image"
+                                id="cameraImageInput"
+                                accept="image/jpeg,image/png,image/webp,image/bmp"
+                                hidden
+                            >
+
+
+                            <button
+                                type="submit"
+                                id="analyzeImageButton"
+                                class="btn btn-success px-5 py-3"
+                                disabled
+                            >
+
+                                <i
+                                    class="fa-solid fa-magnifying-glass-chart me-2"
+                                ></i>
+
+                                Analyze Captured Image
+
+                            </button>
+
+                        </form>
+
+
+                        <!-- PROCESSING -->
+
+                        <div
+                            id="cameraProcessingMessage"
+                            class="alert alert-warning rounded-4 mt-4"
+                            style="display:none;"
+                        >
+
+                            <div
+                                class="d-flex align-items-center justify-content-center"
+                            >
+
+                                <span
+                                    class="spinner-border spinner-border-sm me-2"
+                                ></span>
+
+                                <span>
+
+                                    AI is analyzing your captured image.
+                                    Please wait...
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <p
+                            class="small text-secondary text-center mt-3 mb-0"
+                        >
+
+                            <i
+                                class="fa-solid fa-shield-halved me-1"
+                            ></i>
+
+                            Your captured image will be processed by
+                            the SmartAgriVision AI system.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- AI RESULT -->
+            <!-- ================================================= -->
+
+            <div class="col-lg-5">
+
+                <div
+                    class="card border-0 shadow-lg rounded-4 h-100 overflow-hidden"
+                >
+
+                    <div class="card-header bg-success text-white py-3">
+
+                        <h4 class="fw-bold mb-0">
+
+                            <i class="fa-solid fa-microchip me-2"></i>
+
+                            AI Prediction Result
+
+                        </h4>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+
+                        <!-- ERROR -->
+
+                        {% if error %}
+
+                            <div class="alert alert-danger rounded-4">
+
+                                <i
+                                    class="fa-solid fa-circle-exclamation me-2"
+                                ></i>
+
+                                {{ error }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- ================================================= -->
+                        <!-- RESULT -->
+                        <!-- ================================================= -->
+
+                        {% if prediction %}
+
+                            <!-- CONFIDENCE BADGE -->
+
+                            <div class="mb-4">
+
+                                {% if confidence >= 80 %}
+
+                                    <span
+                                        class="badge bg-success px-3 py-2 fs-6"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-circle-check me-1"
+                                        ></i>
+
+                                        High Confidence Prediction
+
+                                    </span>
+
+                                {% elif confidence >= 50 %}
+
+                                    <span
+                                        class="badge bg-warning text-dark px-3 py-2 fs-6"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-circle-exclamation me-1"
+                                        ></i>
+
+                                        Medium Confidence Prediction
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span
+                                        class="badge bg-danger px-3 py-2 fs-6"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-triangle-exclamation me-1"
+                                        ></i>
+
+                                        Low Confidence Prediction
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- RESULT TABLE -->
+
+                            <div class="table-responsive">
+
+                                <table
+                                    class="table table-borderless align-middle"
+                                >
+
+                                    <tbody>
+
+                                        <tr>
+
+                                            <th>
+                                                Predicted Class
+                                            </th>
+
+                                            <td
+                                                class="fw-bold text-success"
+                                            >
+
+                                                {{ prediction }}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <tr>
+
+                                            <th>
+                                                Confidence
+                                            </th>
+
+                                            <td class="fw-bold">
+
+                                                {{ confidence|floatformat:2 }}%
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <tr>
+
+                                            <th>
+                                                AI Model
+                                            </th>
+
+                                            <td>
+
+                                                {{ model_name }}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <tr>
+
+                                            <th>
+                                                Status
+                                            </th>
+
+                                            <td>
+
+                                                {% if confidence >= 80 %}
+
+                                                    <strong class="text-success">
+
+                                                        High Confidence
+
+                                                    </strong>
+
+                                                {% elif confidence >= 50 %}
+
+                                                    <strong class="text-warning">
+
+                                                        Medium Confidence
+
+                                                    </strong>
+
+                                                {% else %}
+
+                                                    <strong class="text-danger">
+
+                                                        Low Confidence
+
+                                                    </strong>
+
+                                                {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <tr>
+
+                                            <th>
+                                                Detection Date
+                                            </th>
+
+                                            <td>
+
+                                                {% if detection_date %}
+
+                                                    {{ detection_date }}
+
+                                                {% else %}
+
+                                                    {% now "d M Y, h:i A" %}
+
+                                                {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- AI ANALYSIS -->
+
+                            <h6 class="fw-bold mb-3">
+
+                                <i
+                                    class="fa-solid fa-chart-line text-success me-2"
+                                ></i>
+
+                                AI Analysis
+
+                            </h6>
+
+
+                            <p class="text-secondary">
+
+                                The AI model analyzed the captured plant
+                                image and generated the prediction shown
+                                above.
+
+                                Please review the confidence score before
+                                taking agricultural action.
+
+                            </p>
+
+
+                            {% if confidence < 70 %}
+
+                                <div
+                                    class="alert alert-warning rounded-4"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-triangle-exclamation me-2"
+                                    ></i>
+
+                                    The prediction confidence is relatively
+                                    low. Consider capturing another image
+                                    with better lighting and a clearer view
+                                    of the plant.
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- CONFIDENCE -->
+
+                            <h6 class="fw-bold mt-4 mb-2">
+
+                                Confidence Level
+
+                            </h6>
+
+
+                            <div
+                                class="progress"
+                                style="height:14px;"
+                            >
+
+                                <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    style="width:{{ confidence }}%;"
+                                    aria-valuenow="{{ confidence }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                ></div>
+
+                            </div>
+
+
+                            <!-- CAPTURED IMAGE RESULT -->
+
+                            {% if detection and detection.image %}
+
+                                <div class="mt-4">
+
+                                    <h6 class="fw-bold mb-3">
+
+                                        <i
+                                            class="fa-solid fa-image text-success me-2"
+                                        ></i>
+
+                                        Analyzed Image
+
+                                    </h6>
+
+                                    <img
+                                        src="{{ detection.image.url }}"
+                                        alt="Analyzed plant"
+                                        class="result-image"
+                                    >
+
+                                </div>
+
+                            {% endif %}
+
+
+                        {% else %}
+
+                            <!-- NO RESULT -->
+
+                            <div class="text-center py-5">
+
+                                <i
+                                    class="fa-solid fa-magnifying-glass-chart fa-4x text-secondary mb-4"
+                                ></i>
+
+                                <h5 class="fw-bold">
+
+                                    AI Detection Not Started
+
+                                </h5>
+
+                                <p class="text-secondary">
+
+                                    Turn on your camera, capture a plant
+                                    image, then click
+
+                                    <strong>
+                                        Analyze Captured Image
+                                    </strong>
+
+                                    to generate the AI prediction.
+
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CAMERA TIPS -->
+<!-- ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div
+            class="card border-0 bg-success text-white shadow-lg rounded-4"
+        >
+
+            <div class="card-body p-5">
+
+                <div class="row align-items-center">
+
+                    <div class="col-lg-8">
+
+                        <h3 class="fw-bold mb-4">
+
+                            <i
+                                class="fa-solid fa-lightbulb me-2"
+                            ></i>
+
+                            Best Camera Capture Tips
+
+                        </h3>
+
+
+                        <ul class="mb-0">
+
+                            <li class="mb-2">
+                                Use good natural lighting.
+                            </li>
+
+                            <li class="mb-2">
+                                Keep the plant or leaf clearly visible.
+                            </li>
+
+                            <li class="mb-2">
+                                Hold the camera steady.
+                            </li>
+
+                            <li class="mb-2">
+                                Avoid blurry images.
+                            </li>
+
+                            <li>
+                                Keep the affected area inside the camera frame.
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div
+                        class="col-lg-4 text-center mt-4 mt-lg-0"
+                    >
+
+                        <i
+                            class="fa-solid fa-camera fa-6x opacity-75"
+                        ></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CSS -->
+<!-- ========================================================= -->
+
+<style>
+
+.camera-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.camera-container {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    height: 430px;
+    margin: 0 auto;
+    background: #111;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #198754;
+}
+
+.camera-video {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #111;
+}
+
+.camera-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    color: white;
+    background: #111;
+}
+
+.camera-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+}
+
+.camera-guide {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.captured-container {
+    width: 100%;
+}
+
+.captured-image {
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 18px;
+    background: #111;
+}
+
+.result-image {
+    width: 100%;
+    max-height: 350px;
+    object-fit: contain;
+    border-radius: 18px;
+    background: #111;
+    border: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+
+    .camera-container {
+        height: 360px;
+        border-radius: 16px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .camera-container {
+        height: 300px;
+        border-radius: 14px;
+    }
+
+    .camera-placeholder {
+        padding: 20px;
+    }
+
+    .camera-guide {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+}
+
+</style>
+
+
+<!-- ========================================================= -->
+<!-- CAMERA JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ========================================================
+    // ELEMENTS
+    // ========================================================
+
+    const video = document.getElementById("cameraVideo");
+    const canvas = document.getElementById("cameraCanvas");
+
+    const placeholder =
+        document.getElementById("cameraPlaceholder");
+
+    const loading =
+        document.getElementById("cameraLoading");
+
+    const guide =
+        document.getElementById("cameraGuide");
+
+    const status =
+        document.getElementById("cameraStatus");
+
+    const errorBox =
+        document.getElementById("cameraError");
+
+    const errorText =
+        document.getElementById("cameraErrorText");
+
+    const startButton =
+        document.getElementById("startCameraButton");
+
+    const captureButton =
+        document.getElementById("captureImageButton");
+
+    const stopButton =
+        document.getElementById("stopCameraButton");
+
+    const capturedContainer =
+        document.getElementById("capturedImageContainer");
+
+    const capturedImage =
+        document.getElementById("capturedImage");
+
+    const imageInput =
+        document.getElementById("cameraImageInput");
+
+    const form =
+        document.getElementById("cameraDetectionForm");
+
+    const analyzeButton =
+        document.getElementById("analyzeImageButton");
+
+    const processingMessage =
+        document.getElementById("cameraProcessingMessage");
+
+
+    // ========================================================
+    // CAMERA STREAM
+    // ========================================================
+
+    let cameraStream = null;
+
+
+    // ========================================================
+    // ERROR
+    // ========================================================
+
+    function showError(message) {
+
+        errorText.textContent = message;
+
+        errorBox.style.display = "block";
+    }
+
+
+    function hideError() {
+
+        errorBox.style.display = "none";
+
+        errorText.textContent = "";
+    }
+
+
+    // ========================================================
+    // STATUS
+    // ========================================================
+
+    function setStatus(
+        text,
+        color
+    ) {
+
+        status.className =
+            "badge bg-" +
+            color +
+            " px-3 py-2";
+
+        status.innerHTML =
+            '<i class="fa-solid fa-circle me-1"></i>' +
+            text;
+    }
+
+
+    // ========================================================
+    // START CAMERA
+    // ========================================================
+
+    async function startCamera() {
+
+        hideError();
+
+        loading.style.display = "flex";
+
+        startButton.disabled = true;
+
+        try {
+
+            if (
+                !navigator.mediaDevices ||
+                !navigator.mediaDevices.getUserMedia
+            ) {
+
+                throw new Error(
+                    "Camera is not supported by this browser."
+                );
+
+            }
+
+
+            cameraStream =
+                await navigator.mediaDevices.getUserMedia({
+
+                    video: {
+                        facingMode: {
+                            ideal: "environment"
+                        },
+
+                        width: {
+                            ideal: 1280
+                        },
+
+                        height: {
+                            ideal: 720
+                        }
+                    },
+
+                    audio: false
+
+                });
+
+
+            video.srcObject =
+                cameraStream;
+
+
+            await video.play();
+
+
+            // =================================================
+            // UI
+            // =================================================
+
+            placeholder.style.display = "none";
+
+            video.style.display = "block";
+
+            guide.style.display = "block";
+
+            loading.style.display = "none";
+
+            captureButton.disabled = false;
+
+            stopButton.disabled = false;
+
+            setStatus(
+                "Camera On",
+                "success"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Camera error:",
+                error
+            );
+
+            loading.style.display = "none";
+
+            startButton.disabled = false;
+
+            captureButton.disabled = true;
+
+            stopButton.disabled = true;
+
+            setStatus(
+                "Camera Error",
+                "danger"
+            );
+
+
+            showError(
+                "Unable to access camera. " +
+                "Please allow camera permission and try again."
+            );
+
+        }
+
+    }
+
+
+    // ========================================================
+    // STOP CAMERA
+    // ========================================================
+
+    function stopCamera() {
+
+        if (cameraStream) {
+
+            cameraStream
+                .getTracks()
+                .forEach(function (track) {
+
+                    track.stop();
+
+                });
+
+            cameraStream = null;
+        }
+
+
+        video.srcObject = null;
+
+        video.style.display = "none";
+
+        placeholder.style.display = "flex";
+
+        guide.style.display = "none";
+
+        captureButton.disabled = true;
+
+        stopButton.disabled = true;
+
+        startButton.disabled = false;
+
+        setStatus(
+            "Camera Off",
+            "secondary"
+        );
+
+    }
+
+
+    // ========================================================
+    // CAPTURE IMAGE
+    // ========================================================
+
+    function captureImage() {
+
+        hideError();
+
+        if (!cameraStream) {
+
+            showError(
+                "Please turn on the camera first."
+            );
+
+            return;
+        }
+
+
+        if (
+            video.videoWidth === 0 ||
+            video.videoHeight === 0
+        ) {
+
+            showError(
+                "Camera video is not ready yet."
+            );
+
+            return;
+        }
+
+
+        // ====================================================
+        // SET CANVAS SIZE
+        // ====================================================
+
+        canvas.width =
+            video.videoWidth;
+
+        canvas.height =
+            video.videoHeight;
+
+
+        // ====================================================
+        // DRAW VIDEO FRAME
+        // ====================================================
+
+        const context =
+            canvas.getContext("2d");
+
+        context.drawImage(
+            video,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        // ====================================================
+        // SHOW CAPTURED IMAGE
+        // ====================================================
+
+        const previewURL =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.92
+            );
+
+        capturedImage.src =
+            previewURL;
+
+        capturedContainer.style.display =
+            "block";
+
+
+        // ====================================================
+        // MOST IMPORTANT PART
+        //
+        // Convert canvas -> Blob -> File
+        // -> DataTransfer
+        // -> input.files
+        // ====================================================
+
+        canvas.toBlob(
+            function (blob) {
+
+                if (!blob) {
+
+                    showError(
+                        "Unable to create image file."
+                    );
+
+                    return;
+                }
+
+
+                const file =
+                    new File(
+                        [blob],
+                        "camera_capture.jpg",
+                        {
+                            type: "image/jpeg",
+                            lastModified: Date.now()
+                        }
+                    );
+
+
+                // ==========================================
+                // DataTransfer allows us to set input.files
+                // ==========================================
+
+                const dataTransfer =
+                    new DataTransfer();
+
+                dataTransfer.items.add(
+                    file
+                );
+
+
+                imageInput.files =
+                    dataTransfer.files;
+
+
+                // ==========================================
+                // DEBUG
+                // ==========================================
+
+                console.log(
+                    "cameraImageInput.files =",
+                    imageInput.files
+                );
+
+                console.log(
+                    "Number of files =",
+                    imageInput.files.length
+                );
+
+                if (
+                    imageInput.files.length > 0
+                ) {
+
+                    console.log(
+                        "File name =",
+                        imageInput.files[0].name
+                    );
+
+                    console.log(
+                        "File type =",
+                        imageInput.files[0].type
+                    );
+
+                    console.log(
+                        "File size =",
+                        imageInput.files[0].size
+                    );
+
+                }
+
+
+                // ==========================================
+                // ENABLE ANALYZE
+                // ==========================================
+
+                if (
+                    imageInput.files.length > 0
+                ) {
+
+                    analyzeButton.disabled =
+                        false;
+
+                    setStatus(
+                        "Image Captured",
+                        "primary"
+                    );
+
+                } else {
+
+                    analyzeButton.disabled =
+                        true;
+
+                }
+
+            },
+
+            "image/jpeg",
+            0.92
+        );
+
+    }
+
+
+    // ========================================================
+    // FORM SUBMIT
+    // ========================================================
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            console.log(
+                "FORM SUBMIT STARTED"
+            );
+
+
+            console.log(
+                "cameraImageInput.files =",
+                imageInput.files
+            );
+
+
+            // ================================================
+            // CHECK FILE
+            // ================================================
+
+            if (
+                !imageInput.files ||
+                imageInput.files.length === 0
+            ) {
+
+                event.preventDefault();
+
+                showError(
+                    "No captured image found. " +
+                    "Please capture an image first."
+                );
+
+                console.error(
+                    "SUBMIT BLOCKED: imageInput.files is empty."
+                );
+
+                return;
+            }
+
+
+            // ================================================
+            // CHECK ACTUAL FILE
+            // ================================================
+
+            const file =
+                imageInput.files[0];
+
+
+            console.log(
+                "Submitting file:",
+                file.name,
+                file.type,
+                file.size
+            );
+
+
+            if (
+                !file.type.startsWith("image/")
+            ) {
+
+                event.preventDefault();
+
+                showError(
+                    "Captured file is not a valid image."
+                );
+
+                return;
+            }
+
+
+            // ================================================
+            // SHOW PROCESSING
+            // ================================================
+
+            analyzeButton.disabled =
+                true;
+
+            processingMessage.style.display =
+                "block";
+
+
+            // ================================================
+            // ALLOW NORMAL DJANGO POST
+            // ================================================
+
+            console.log(
+                "FORM WILL NOW SUBMIT TO DJANGO."
+            );
+
+        }
+    );
+
+
+    // ========================================================
+    // BUTTON EVENTS
+    // ========================================================
+
+    startButton.addEventListener(
+        "click",
+        startCamera
+    );
+
+
+    captureButton.addEventListener(
+        "click",
+        captureImage
+    );
+
+
+    stopButton.addEventListener(
+        "click",
+        stopCamera
+    );
+
+
+    // ========================================================
+    // INITIAL STATE
+    // ========================================================
+
+    setStatus(
+        "Camera Off",
+        "secondary"
+    );
+
+});
+
+</script>
+
+
+{% endblock %}
